@@ -1,10 +1,14 @@
-"use client"
+"use client";
 
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import dayjs from "dayjs";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,23 +17,26 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
-import { Checkbox } from "@/components/ui/checkbox"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { MyFormField, formFields } from "./formFields";
+import { useMemo } from "react";
 
 const FormSchema = z.object({
   username: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
+
   bio: z
     .string()
     .min(10, {
@@ -38,194 +45,259 @@ const FormSchema = z.object({
     .max(160, {
       message: "Bio must not be longer than 30 characters.",
     }),
-  email: z
-    .string({
-      required_error: "Please select an email to display.",
-    })
-    .email(),
-  items: z.array(z.string()).refine((value) => value.some((item) => item), {
-    message: "You have to select at least one item.",
-  }),
-  type: z.enum(["all", "mentions", "none"], {
-    required_error: "You need to select a notification type.",
-  }),
-})
+
+  email: z.string().email("Invalid email"),
+
+  gender: z.string().min(1, "Please select an option"),
+
+  hobbies: z.array(z.string()).min(1, "Please select at least one"),
+
+  upload: z.any(),
+
+  isMember: z.string().min(1, "Please select an option"),
+
+  ieeeId: z
+    .string()
+    .optional()
+    .refine((val) => !val || val.length >= 5, {
+      message: "IEEE ID must be at least 5 characters if provided.",
+    }),
+
+  dob: z
+    .string()
+    .refine((val) => val.trim() !== "", "Date of Birth is required"),
+
+  time: z.string().min(1, "Please select a time"),
+
+});
 
 export function SampleForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       username: "",
-      items: ["recents", "home"],
-    },
-  })
+      bio: "",
+      email: "",
+      isMember: "",
+      ieeeId: "",
+      gender: "",
+      hobbies: [],
+      upload: "",
+      dob: "",
+      time: "",
+    }
+  });
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = form;
+
+  const watchFields = watch();
+  const visibleFields = useMemo(() => {
+    return formFields.filter((field) => {
+      if (!field.dependsOn) return true;
+      const dependencyValue =
+        watchFields[field.dependsOn as keyof z.infer<typeof FormSchema>];
+      return typeof field.showIf === "function"
+        ? field.showIf(dependencyValue)
+        : dependencyValue === field.showIf;
+    });
+  }, [watchFields]);
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data)
+    console.log(data);
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
-        <FormField
-          control={form.control}
-          name="username"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Username</FormLabel>
-              <FormControl>
-                <Input placeholder="shadcn" {...field} />
-              </FormControl>
-              <FormDescription>
-                This is your public display name.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="bio"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Bio</FormLabel>
-              <FormControl>
-                <Textarea
-                  placeholder="Tell us a little bit about yourself"
-                  className="resize-none"
-                  {...field}
-                />
-              </FormControl>
-              <FormDescription>
-                You can <span>@mention</span> other users and organizations.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormLabel>Email</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="space-y-5 p-10 w-full max-w-3xl mx-auto"
+      >
+        <h2 className="text-2xl font-bold mb-6 text-center">IEEE Form </h2>
+        {visibleFields.map((field) => (
+          <FormField
+            key={field.name}
+            control={control}
+            name={field.name as keyof z.infer<typeof FormSchema>}
+            render={({ field: formField }) => (
+              <FormItem>
+                <FormLabel>{field.label}</FormLabel>
                 <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select a verified email to display" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  <SelectItem value="m@example.com">m@example.com</SelectItem>
-                  <SelectItem value="m@google.com">m@google.com</SelectItem>
-                  <SelectItem value="m@support.com">m@support.com</SelectItem>
-                </SelectContent>
-              </Select>
-              <FormDescription>
-                You can manage email addresses in your account settings.
-              </FormDescription>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-
-        <FormField
-          control={form.control}
-          name="items"
-          render={() => (
-            <FormItem>
-              <div className="mb-4">
-                <FormLabel className="text-base">Sidebar</FormLabel>
-                <FormDescription>
-                  Select the items you want to display in the sidebar.
-                </FormDescription>
-              </div>
-              {[
-                { id: "recents", label: "Recents" },
-                { id: "home", label: "Home" },
-                { id: "applications", label: "Applications" },
-              ].map((item) => (
-                <FormField
-                  key={item.id}
-                  control={form.control}
-                  name="items"
-                  render={({ field }) => {
-                    return (
-                      <FormItem
-                        key={item.id}
-                        className="flex flex-row items-start space-x-3 space-y-0"
-                      >
-                        <FormControl>
-                          <Checkbox
-                            checked={field.value?.includes(item.id)}
-                            onCheckedChange={(checked) => {
-                              return checked
-                                ? field.onChange([...field.value, item.id])
-                                : field.onChange(
-                                  field.value?.filter(
-                                    (value) => value !== item.id
-                                  )
-                                )
-                            }}
+                  {(() => {
+                    switch (field.type) {
+                      case "text":
+                      case "email":
+                      case "number":
+                      case "date":
+                        return (
+                          <Input
+                            type={field.type}
+                            {...formField}
+                            className="border p-2 rounded w-full"
                           />
-                        </FormControl>
-                        <FormLabel className="text-sm font-normal">
-                          {item.label}
-                        </FormLabel>
-                      </FormItem>
-                    )
-                  }}
-                />
-              ))}
-              <FormMessage />
-            </FormItem>
-          )}
-        />
+                        );
 
-        <FormField
-          control={form.control}
-          name="type"
-          render={({ field }) => (
-            <FormItem className="space-y-3">
-              <FormLabel>Notify me about...</FormLabel>
-              <FormControl>
-                <RadioGroup
-                  onValueChange={field.onChange}
-                  defaultValue={field.value}
-                  className="flex flex-col space-y-1"
-                >
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="all" />
-                    </FormControl>
-                    <FormLabel className="font-normal">
-                      All new messages
-                    </FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="mentions" />
-                    </FormControl>
-                    <FormLabel className="font-normal">
-                      Direct messages and mentions
-                    </FormLabel>
-                  </FormItem>
-                  <FormItem className="flex items-center space-x-3 space-y-0">
-                    <FormControl>
-                      <RadioGroupItem value="none" />
-                    </FormControl>
-                    <FormLabel className="font-normal">Nothing</FormLabel>
-                  </FormItem>
-                </RadioGroup>
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <Button type="submit">Submit</Button>
+                      case "textarea":
+                        return (
+                          <Textarea
+                            {...formField}
+                            className="border p-2 rounded w-full resize-none"
+                          />
+                        );
+
+                      case "select":
+                        return (
+                          <Select
+                            onValueChange={formField.onChange}
+                            value={formField.value || ""}
+                          >
+                            <SelectTrigger>
+                              <SelectValue />
+                            </SelectTrigger>
+                            <SelectContent>
+                              {field.options?.map((option) => (
+                                <SelectItem key={option} value={option}>
+                                  {option}
+                                </SelectItem>
+                              ))}
+                            </SelectContent>
+                          </Select>
+                        );
+
+                      case "multiselect":
+                        return (
+                          <div className="flex flex-col gap-2">
+                            {field.options?.map((option) => (
+                              <Controller
+                                control={control}
+                                name={
+                                  field.name as keyof z.infer<typeof FormSchema>
+                                }
+                                key={option}
+                                render={({ field: controllerField }) => (
+                                  <div className="flex items-center gap-2">
+                                    <Checkbox
+                                      checked={controllerField.value?.includes(
+                                        option
+                                      )}
+                                      onCheckedChange={(checked) => {
+                                        controllerField.onChange(
+                                          checked
+                                            ? [
+                                              ...((controllerField.value as string[]) ||
+                                                []),
+                                              option,
+                                            ]
+                                            : (
+                                              controllerField.value as string[]
+                                            )?.filter(
+                                              (value) => value !== option
+                                            )
+                                        );
+                                      }}
+                                    />
+                                    <FormLabel>{option}</FormLabel>
+                                  </div>
+                                )}
+                              />
+                            ))}
+                          </div>
+                        );
+
+                      case "radio":
+                        return (
+                          <RadioGroup
+                            onValueChange={formField.onChange}
+                            defaultValue={formField.value}
+                          >
+                            {field.options?.map((option) => (
+                              <FormItem
+                                key={option}
+                                className="flex items-center space-x-3"
+                              >
+                                <FormControl>
+                                  <RadioGroupItem value={option} />
+                                </FormControl>
+                                <FormLabel>{option}</FormLabel>
+                              </FormItem>
+                            ))}
+                          </RadioGroup>
+                        );
+
+                      case "file":
+                        return (
+                          <Controller
+                            control={control}
+                            name={
+                              field.name as keyof z.infer<typeof FormSchema>
+                            }
+                            render={({ field: { onChange, ref } }) => (
+                              <Input
+                                type="file"
+                                onChange={(e) => onChange(e.target.files?.[0])}
+                                ref={ref}
+                                className="border p-2 rounded w-full"
+                              />
+                            )}
+                          />
+                        );
+                      case "time":
+                        return (
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <Controller
+                              control={control}
+                              name="time"
+                              render={({ field }) => (
+                                <TimePicker
+                                  label="Select Time"
+                                  value={field.value ? dayjs(field.value, "HH:mm") : null}
+                                  onChange={(newValue) => {
+                                    field.onChange(newValue ? newValue.format("HH:mm") : "");
+                                  }}
+                                  slotProps={{
+                                    textField: {
+                                      fullWidth: true,
+
+                                    },
+                                  }}
+                                />
+                              )}
+                            />
+                          </LocalizationProvider>
+                        );
+
+
+
+                      default:
+                        return null;
+                    }
+                  })()}
+                </FormControl>
+
+                {field.helperText && (
+                  <FormDescription>{field.helperText}</FormDescription>
+                )}
+
+                <FormMessage>
+                  {
+                    errors[field.name as keyof z.infer<typeof FormSchema>]
+                      ?.message as string
+                  }
+                </FormMessage>
+              </FormItem>
+            )}
+          />
+        ))}
+        <div className="flex justify-end">
+          <Button type="submit" className="w-auto ">
+            Submit
+          </Button>
+        </div>
       </form>
     </Form>
-  )
+  );
 }
