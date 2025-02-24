@@ -29,63 +29,68 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { MyFormField, formFields } from "./formFields";
+import { sampleForm } from './sampleData'
 import { useMemo } from "react";
 
-const FormSchema = z.object({
-  username: z.string().min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
 
-  bio: z
-    .string()
-    .min(10, {
-      message: "Bio must be at least 10 characters.",
-    })
-    .max(160, {
-      message: "Bio must not be longer than 30 characters.",
-    }),
 
-  email: z.string().email("Invalid email"),
+const FormSchema = z.object(
+  sampleForm.formFields.reduce((acc: Record<string, any>, field) => {
+    let schema;
+    switch (field.fieldType) {
+      case "Short Input Fields":
+      case "IEEE Member ID":
+      case "Email":
+      case "Date Picker":
+      case "Time picker":
+        schema = z.string().min(1, `${field.label} is required`);
+        break;
 
-  gender: z.string().min(1, "Please select an option"),
+      case "Text area":
+        schema = z
+          .string()
+          .min(field.minWords || 10, `${field.label} is too short`)
+          .max(field.maxWords || 200, `${field.label} is too long`)
+        break;
 
-  hobbies: z.array(z.string()).min(1, "Please select at least one"),
+      case "Radio":
+      case "Dropdown":
+        schema = z.string().min(1, `Please select ${field.label}`);
+        break;
 
-  upload: z.any(),
+      case "Multiple choice":
+        schema = z.array(z.string()).min(1, `Please select at least one ${field.label}`);
+        break;
 
-  isMember: z.string().min(1, "Please select an option"),
+      case "File upload":
+        schema = z.any().refine((file) => {
+          if (!file) return false;
+          if (!field.fileTypes?.includes(file?.name.split(".").pop())) return false;
+          return file.size <= (field.maxFileSize || 5) * 1024 * 1024;
+        }, `Invalid file type or size for ${field.label}`);
+        break;
 
-  ieeeId: z
-    .string()
-    .optional()
-    .refine((val) => !val || val.length >= 5, {
-      message: "IEEE ID must be at least 5 characters if provided.",
-    }),
+      default:
+        schema = z.string().optional();
+    }
 
-  dob: z
-    .string()
-    .refine((val) => val.trim() !== "", "Date of Birth is required"),
+    if (field.conditionalLogic) {
+      schema = schema.optional();
+    }
 
-  time: z.string().min(1, "Please select a time"),
-
-});
+    acc[field.fieldId] = schema;
+    return acc;
+  }, {})
+);
 
 export function SampleForm() {
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
-    defaultValues: {
-      username: "",
-      bio: "",
-      email: "",
-      isMember: "",
-      ieeeId: "",
-      gender: "",
-      hobbies: [],
-      upload: "",
-      dob: "",
-      time: "",
-    }
+    defaultValues: sampleForm.formFields.reduce((acc, field) => {
+      acc[field.fieldId] = "";
+      acc[field.fieldId] = field.fieldType === "Multiple choice" ? [] : "";
+      return acc;
+    }, {} as Record<string, any>),
   });
 
   const {
@@ -95,17 +100,25 @@ export function SampleForm() {
     watch,
   } = form;
 
-  const watchFields = watch();
+  const watchFields = watch() as Record<string, any>;
   const visibleFields = useMemo(() => {
-    return formFields.filter((field) => {
-      if (!field.dependsOn) return true;
-      const dependencyValue =
-        watchFields[field.dependsOn as keyof z.infer<typeof FormSchema>];
-      return typeof field.showIf === "function"
-        ? field.showIf(dependencyValue)
-        : dependencyValue === field.showIf;
+    return sampleForm.formFields.filter((field) => {
+      if (!field.conditionalLogic) return true;
+
+      const { fieldId, value, operator } = field.conditionalLogic;
+      const dependencyValue = watchFields[fieldId];
+
+      switch (operator) {
+        case "equals":
+          return dependencyValue === value;
+        case "not_equals":
+          return dependencyValue !== value;
+        default:
+          return true;
+      }
     });
   }, [watchFields]);
+
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
@@ -113,35 +126,34 @@ export function SampleForm() {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="space-y-5 p-10 w-full max-w-3xl mx-auto"
-      >
-        <h2 className="text-2xl font-bold mb-6 text-center">IEEE Form </h2>
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 p-10 w-full max-w-3xl mx-auto">
+        <h2 className="text-2xl font-bold mb-6 text-center">{sampleForm.formTitle}</h2>
+        <p className="text-center mb-4 text-gray-600">{sampleForm.description}</p>
+
         {visibleFields.map((field) => (
           <FormField
-            key={field.name}
+            key={field.fieldId}
             control={control}
-            name={field.name as keyof z.infer<typeof FormSchema>}
+            name={field.fieldId as keyof z.infer<typeof FormSchema>}
             render={({ field: formField }) => (
               <FormItem>
                 <FormLabel>{field.label}</FormLabel>
                 <FormControl>
                   {(() => {
-                    switch (field.type) {
-                      case "text":
-                      case "email":
-                      case "number":
-                      case "date":
+                    switch (field.fieldType) {
+
+                      case "Short Input Fields":
+                      case "IEEE Member ID":
+                      case "Email":
                         return (
                           <Input
-                            type={field.type}
+                            type={field.fieldType === "Email" ? "email" : "text"}
                             {...formField}
                             className="border p-2 rounded w-full"
                           />
                         );
 
-                      case "textarea":
+                      case "Text area":
                         return (
                           <Textarea
                             {...formField}
@@ -149,7 +161,12 @@ export function SampleForm() {
                           />
                         );
 
-                      case "select":
+                      case "Date Picker":
+                        return (
+                          <input type="date" {...formField} className="border p-2 rounded w-full" />
+                        )
+
+                      case "Dropdown":
                         return (
                           <Select
                             onValueChange={formField.onChange}
@@ -168,47 +185,7 @@ export function SampleForm() {
                           </Select>
                         );
 
-                      case "multiselect":
-                        return (
-                          <div className="flex flex-col gap-2">
-                            {field.options?.map((option) => (
-                              <Controller
-                                control={control}
-                                name={
-                                  field.name as keyof z.infer<typeof FormSchema>
-                                }
-                                key={option}
-                                render={({ field: controllerField }) => (
-                                  <div className="flex items-center gap-2">
-                                    <Checkbox
-                                      checked={controllerField.value?.includes(
-                                        option
-                                      )}
-                                      onCheckedChange={(checked) => {
-                                        controllerField.onChange(
-                                          checked
-                                            ? [
-                                              ...((controllerField.value as string[]) ||
-                                                []),
-                                              option,
-                                            ]
-                                            : (
-                                              controllerField.value as string[]
-                                            )?.filter(
-                                              (value) => value !== option
-                                            )
-                                        );
-                                      }}
-                                    />
-                                    <FormLabel>{option}</FormLabel>
-                                  </div>
-                                )}
-                              />
-                            ))}
-                          </div>
-                        );
-
-                      case "radio":
+                      case "Radio":
                         return (
                           <RadioGroup
                             onValueChange={formField.onChange}
@@ -228,13 +205,40 @@ export function SampleForm() {
                           </RadioGroup>
                         );
 
-                      case "file":
+
+                      case "Multiple choice":
+                        return (
+                          <div className="flex flex-col gap-2">
+                            {field.options?.map((option) => (
+                              <Controller
+                                control={control}
+                                name={field.fieldId as keyof z.infer<typeof FormSchema>}
+                                key={option}
+                                render={({ field: controllerField }) => (
+                                  <div className="flex items-center gap-2">
+                                    <Checkbox
+                                      checked={controllerField.value?.includes(option)}
+                                      onCheckedChange={(checked) => {
+                                        controllerField.onChange(
+                                          checked
+                                            ? [...(controllerField.value || []), option]
+                                            : controllerField.value?.filter((v: string) => v !== option)
+                                        );
+                                      }}
+                                    />
+                                    <FormLabel>{option}</FormLabel>
+                                  </div>
+                                )}
+                              />
+                            ))}
+                          </div>
+                        );
+
+                      case "File upload":
                         return (
                           <Controller
                             control={control}
-                            name={
-                              field.name as keyof z.infer<typeof FormSchema>
-                            }
+                            name={field.fieldId as keyof z.infer<typeof FormSchema>}
                             render={({ field: { onChange, ref } }) => (
                               <Input
                                 type="file"
@@ -245,55 +249,60 @@ export function SampleForm() {
                             )}
                           />
                         );
-                      case "time":
+
+                      case "Time picker":
                         return (
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <Controller
                               control={control}
-                              name="time"
+                              name={field.fieldId}
                               render={({ field }) => (
-                                <TimePicker
-                                  label="Select Time"
-                                  value={field.value ? dayjs(field.value, "HH:mm") : null}
-                                  onChange={(newValue) => {
-                                    field.onChange(newValue ? newValue.format("HH:mm") : "");
-                                  }}
-                                  slotProps={{
-                                    textField: {
-                                      fullWidth: true,
+                                <div className="w-full mt-2">
+                                  <TimePicker
+                                    label="Time"
+                                    value={field.value ? dayjs(field.value, "HH:mm") : null}
+                                    onChange={(newValue) =>
+                                      field.onChange(newValue ? newValue.format("HH:mm") : "")
+                                    }
+                                    slotProps={{
+                                      textField: {
+                                        fullWidth: true,
+                                        sx: {
+                                          mt: 1,
+                                          borderRadius: "8px",
+                                          "& .MuiOutlinedInput-root": {
+                                            minHeight: "38px",
+                                            height: "38px",
+                                            padding: "4px 10px",
+                                            fontSize: "14px",
+                                          },
 
-                                    },
-                                  }}
-                                />
+                                        },
+                                      },
+                                    }}
+                                  />
+                                </div>
                               )}
                             />
                           </LocalizationProvider>
                         );
-
-
 
                       default:
                         return null;
                     }
                   })()}
                 </FormControl>
-
-                {field.helperText && (
-                  <FormDescription>{field.helperText}</FormDescription>
+                {field.description && (
+                  <FormDescription>{field.description}</FormDescription>
                 )}
-
-                <FormMessage>
-                  {
-                    errors[field.name as keyof z.infer<typeof FormSchema>]
-                      ?.message as string
-                  }
-                </FormMessage>
+                <FormMessage>{errors[field.fieldId]?.message as string}</FormMessage>
               </FormItem>
             )}
           />
         ))}
+
         <div className="flex justify-end">
-          <Button type="submit" className="w-auto ">
+          <Button type="submit" className="w-auto">
             Submit
           </Button>
         </div>
