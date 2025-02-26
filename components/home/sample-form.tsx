@@ -90,7 +90,7 @@ export function SampleForm() {
             name={field.fieldId as keyof z.infer<typeof FormSchema>}
             render={({ field: formField }) => (
               <FormItem>
-                <FormLabel>{field.label}</FormLabel>
+                <FormLabel>{field.label}{field.required && <span className="text-destructive"> *</span>}</FormLabel>
                 <FormControl>
                   {(() => {
                     switch (field.fieldType) {
