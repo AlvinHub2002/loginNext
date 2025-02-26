@@ -47,7 +47,7 @@ export function SampleForm({ formData }: FormProps) {
     defaultValues: formData.formFields.reduce((acc, field) => {
       acc[field.fieldId] = field.fieldType === "Multiple choice" ? [] : "";
       return acc;
-    }, {} as Record<string, any>),
+    }, {} as Record<string, "" | never[]>),
   });
 
   const {
@@ -57,7 +57,7 @@ export function SampleForm({ formData }: FormProps) {
     watch,
   } = form;
 
-  const watchFields = watch() as Record<string, any>;
+  const watchFields = watch();
   const watchFieldsArray = formData.formFields
     .filter((field) => field.conditionalLogic)
     .map((field) => watch(field.conditionalLogic?.fieldId || ""));
@@ -78,6 +78,7 @@ export function SampleForm({ formData }: FormProps) {
           return true;
       }
     });
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, watchFieldsArray);
 
   useEffect(() => {
