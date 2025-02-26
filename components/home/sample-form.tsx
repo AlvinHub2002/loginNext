@@ -134,7 +134,7 @@ export function SampleForm() {
                         );
 
                       case "Radio":
-                        {/* TODO: Change type of RadioItem from string to a object with id, label and value */ }
+                        // TODO: Change type of RadioItem from string to a object with id, label and value
                         return (
                           <RadioGroup
                             onValueChange={formField.onChange}
@@ -155,7 +155,7 @@ export function SampleForm() {
                         );
 
                       case "Multiple choice":
-                        {/* TODO: Change type of Checkbox option from string to a object with id, label and value */ }
+                        // TODO: Change type of Checkbox option from string to a object with id, label and value
                         return (
                           <div className="flex flex-col gap-2">
                             {field.options?.map((option) => (
@@ -207,6 +207,7 @@ export function SampleForm() {
                         );
 
                       case "Date Picker":
+                        // TODO: Use shadcn input field instead of mui datepicker input field
                         return (
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <Controller
@@ -244,6 +245,7 @@ export function SampleForm() {
                         )
 
                       case "Time picker":
+                        // TODO: Use shadcn input field instead of mui datepicker input field
                         return (
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <Controller
