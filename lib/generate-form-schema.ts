@@ -1,9 +1,9 @@
 import { z } from "zod";
-import { sampleForm } from "../components/home/sampleData";
+import { FormSchema } from "@/types/form-schema";
 
-export const generateFormSchema = () => {
+export const generateFormSchema = (formData: FormSchema) => {
     return z.object(
-        sampleForm.formFields.reduce((acc: Record<string, any>, field) => {
+        formData.formFields.reduce((acc: Record<string, any>, field) => {
             let schema;
             switch (field.fieldType) {
                 case "Short Input Fields":

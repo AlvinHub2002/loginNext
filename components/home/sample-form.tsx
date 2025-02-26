@@ -30,16 +30,21 @@ import {
 } from "@/components/ui/select";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { sampleForm } from './sampleData'
 import { useMemo } from "react";
 import { generateFormSchema } from "@/lib/generate-form-schema";
+import { FormSchema } from "@/types/form-schema";
 
-const FormSchema = generateFormSchema();
+interface FormProps {
+  formData: FormSchema;
+}
 
-export function SampleForm() {
-  const form = useForm<z.infer<typeof FormSchema>>({
-    resolver: zodResolver(FormSchema),
-    defaultValues: sampleForm.formFields.reduce((acc, field) => {
+export function SampleForm({ formData }: FormProps) {
+
+  const formSchema = generateFormSchema(formData);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: formData.formFields.reduce((acc, field) => {
       acc[field.fieldId] = "";
       acc[field.fieldId] = field.fieldType === "Multiple choice" ? [] : "";
       return acc;
@@ -55,7 +60,7 @@ export function SampleForm() {
 
   const watchFields = watch() as Record<string, any>;
   const visibleFields = useMemo(() => {
-    return sampleForm.formFields.filter((field) => {
+    return formData.formFields.filter((field) => {
       if (!field.conditionalLogic) return true;
 
       const { fieldId, value, operator } = field.conditionalLogic;
@@ -73,21 +78,21 @@ export function SampleForm() {
   }, [watchFields]);
 
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  function onSubmit(data: z.infer<typeof formSchema>) {
     console.log(data);
   }
 
   return (
     <Form {...form}>
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 p-10 w-full max-w-3xl mx-auto">
-        <h2 className="text-2xl font-bold mb-6 text-center">{sampleForm.formTitle}</h2>
-        <p className="text-center mb-4 text-gray-600">{sampleForm.description}</p>
+        <h2 className="text-2xl font-bold mb-6 text-center">{formData.formTitle}</h2>
+        <p className="text-center mb-4 text-gray-600">{formData.description}</p>
 
         {visibleFields.map((field) => (
           <FormField
             key={field.fieldId}
             control={control}
-            name={field.fieldId as keyof z.infer<typeof FormSchema>}
+            name={field.fieldId}
             render={({ field: formField }) => (
               <FormItem>
                 <FormLabel>{field.label}{field.required && <span className="text-destructive"> *</span>}</FormLabel>
@@ -194,7 +199,7 @@ export function SampleForm() {
                         return (
                           <Controller
                             control={control}
-                            name={field.fieldId as keyof z.infer<typeof FormSchema>}
+                            name={field.fieldId}
                             render={({ field: { onChange, ref } }) => (
                               <Input
                                 type="file"
