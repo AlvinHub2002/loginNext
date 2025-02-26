@@ -134,6 +134,7 @@ export function SampleForm() {
                         );
 
                       case "Radio":
+                        {/* TODO: Change type of RadioItem from string to a object with id, label and value */ }
                         return (
                           <RadioGroup
                             onValueChange={formField.onChange}
@@ -142,40 +143,47 @@ export function SampleForm() {
                             {field.options?.map((option) => (
                               <FormItem
                                 key={option}
-                                className="flex items-center space-x-3"
+                                className="flex items-center space-x-3 space-y-0"
                               >
                                 <FormControl>
                                   <RadioGroupItem value={option} />
                                 </FormControl>
-                                <FormLabel>{option}</FormLabel>
+                                <FormLabel className="text-sm font-normal">{option}</FormLabel>
                               </FormItem>
                             ))}
                           </RadioGroup>
                         );
 
-
                       case "Multiple choice":
+                        {/* TODO: Change type of Checkbox option from string to a object with id, label and value */ }
                         return (
                           <div className="flex flex-col gap-2">
                             {field.options?.map((option) => (
-                              <Controller
-                                control={control}
-                                name={field.fieldId as keyof z.infer<typeof FormSchema>}
+                              <FormField
                                 key={option}
-                                render={({ field: controllerField }) => (
-                                  <div className="flex items-center gap-2">
-                                    <Checkbox
-                                      checked={controllerField.value?.includes(option)}
-                                      onCheckedChange={(checked) => {
-                                        controllerField.onChange(
-                                          checked
-                                            ? [...(controllerField.value || []), option]
-                                            : controllerField.value?.filter((v: string) => v !== option)
-                                        );
-                                      }}
-                                    />
-                                    <FormLabel>{option}</FormLabel>
-                                  </div>
+                                control={form.control}
+                                name={field.fieldId}
+                                render={({ field: formField }) => (
+                                  <FormItem
+                                    key={option}
+                                    className="flex flex-row items-center space-x-3 space-y-0"
+                                  >
+                                    <FormControl>
+                                      <Checkbox
+                                        checked={formField.value?.includes(option)}
+                                        onCheckedChange={(checked) => {
+                                          formField.onChange(
+                                            checked
+                                              ? [...(formField.value || []), option]
+                                              : formField.value?.filter((v: string) => v !== option)
+                                          );
+                                        }}
+                                      />
+                                    </FormControl>
+                                    <FormLabel className="text-sm font-normal">
+                                      {option}
+                                    </FormLabel>
+                                  </FormItem>
                                 )}
                               />
                             ))}
