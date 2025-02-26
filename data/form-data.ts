@@ -51,7 +51,7 @@ export const sampleFormData: FormSchema = {
         },
         {
             fieldId: "ieeeId",
-            fieldType: "IEEE Member ID",
+            fieldType: "Short Input Fields",
             label: "IEEE Member ID",
             description: "Enter your IEEE membership ID",
             placeholder: "123456",
