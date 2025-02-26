@@ -6,6 +6,7 @@ import { z } from "zod";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from "dayjs";
 
 import { Button } from "@/components/ui/button";
@@ -113,11 +114,6 @@ export function SampleForm() {
                           />
                         );
 
-                      case "Date Picker":
-                        return (
-                          <input type="date" {...formField} className="border p-2 rounded w-full" />
-                        )
-
                       case "Dropdown":
                         return (
                           <Select
@@ -202,25 +198,61 @@ export function SampleForm() {
                           />
                         );
 
+                      case "Date Picker":
+                        return (
+                          <LocalizationProvider dateAdapter={AdapterDayjs}>
+                            <Controller
+                              control={control}
+                              name={field.fieldId}
+                              render={({ field: formField }) => (
+                                <div className="w-full">
+                                  <DatePicker
+                                    value={formField.value ? dayjs(formField.value, "DD/MM/YYYY") : null}
+                                    onChange={(newValue) =>
+                                      formField.onChange(newValue ? newValue.format("DD/MM/YYYY") : "")
+                                    }
+                                    format="DD/MM/YYYY"
+                                    slotProps={{
+                                      textField: {
+                                        fullWidth: true,
+                                        placeholder: field?.placeholder,
+                                        sx: {
+                                          borderRadius: "8px",
+                                          "& .MuiOutlinedInput-root": {
+                                            minHeight: "38px",
+                                            height: "38px",
+                                            padding: "4px 10px",
+                                            fontSize: "14px",
+                                          },
+
+                                        },
+                                      },
+                                    }}
+                                  />
+                                </div>
+                              )}
+                            />
+                          </LocalizationProvider>
+                        )
+
                       case "Time picker":
                         return (
                           <LocalizationProvider dateAdapter={AdapterDayjs}>
                             <Controller
                               control={control}
                               name={field.fieldId}
-                              render={({ field }) => (
-                                <div className="w-full mt-2">
+                              render={({ field: formField }) => (
+                                <div className="w-full">
                                   <TimePicker
-                                    label="Time"
-                                    value={field.value ? dayjs(field.value, "HH:mm") : null}
+                                    value={formField.value ? dayjs(formField.value, "HH:mm") : null}
                                     onChange={(newValue) =>
-                                      field.onChange(newValue ? newValue.format("HH:mm") : "")
+                                      formField.onChange(newValue ? newValue.format("HH:mm") : "")
                                     }
                                     slotProps={{
                                       textField: {
                                         fullWidth: true,
+                                        placeholder: field.placeholder,
                                         sx: {
-                                          mt: 1,
                                           borderRadius: "8px",
                                           "& .MuiOutlinedInput-root": {
                                             minHeight: "38px",
