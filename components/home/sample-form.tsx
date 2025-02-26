@@ -33,19 +33,18 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useMemo } from "react";
 import { generateFormSchema } from "@/lib/generate-form-schema";
 import { FormSchema } from "@/types/form-schema";
+import { useEffect, useState } from "react";
 
 interface FormProps {
   formData: FormSchema;
 }
 
 export function SampleForm({ formData }: FormProps) {
-
-  const formSchema = generateFormSchema(formData);
+  const [formSchema, setFormSchema] = useState(generateFormSchema(formData.formFields));
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: formData.formFields.reduce((acc, field) => {
-      acc[field.fieldId] = "";
       acc[field.fieldId] = field.fieldType === "Multiple choice" ? [] : "";
       return acc;
     }, {} as Record<string, any>),
@@ -59,6 +58,10 @@ export function SampleForm({ formData }: FormProps) {
   } = form;
 
   const watchFields = watch() as Record<string, any>;
+  const watchFieldsArray = formData.formFields
+    .filter((field) => field.conditionalLogic)
+    .map((field) => watch(field.conditionalLogic?.fieldId || ""));
+
   const visibleFields = useMemo(() => {
     return formData.formFields.filter((field) => {
       if (!field.conditionalLogic) return true;
@@ -75,8 +78,12 @@ export function SampleForm({ formData }: FormProps) {
           return true;
       }
     });
-  }, [watchFields]);
+  }, watchFieldsArray);
 
+  useEffect(() => {
+    const newSchema = generateFormSchema(visibleFields);
+    setFormSchema(newSchema);
+  }, [visibleFields]);
 
   function onSubmit(data: z.infer<typeof formSchema>) {
     console.log(data);
