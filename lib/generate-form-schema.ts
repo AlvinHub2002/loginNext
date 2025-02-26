@@ -7,14 +7,28 @@ export const generateFormSchema = (formData: FormSchema) => {
             let schema;
             switch (field.fieldType) {
                 case "Short Input Fields":
+                    schema = z
+                        .string()
+                        .min(field.required ? 1 : 0, `${field.label} is required`)
+                        .refine((value) => checkMinWord(value, field.minWords), {
+                            message: `Minimum ${field.minWords} words required`,
+                        })
+                        .refine((value) => checkMaxWord(value, field.maxWords), {
+                            message: `Maximum ${field.maxWords} words allowed`,
+                        });
+                    break;
+
                 case "IEEE Member ID":
                     schema = z.string();
                     break;
+
                 case "Email":
-                    schema = field.required
-                        ? z.string().email("Invalid email address")
-                        : z.string().optional();
+                    schema = z
+                        .string()
+                        .min(field.required ? 1 : 0, `${field.label} is required`)
+                        .email("Invalid email address")
                     break;
+
                 case "Date Picker":
                 case "Time picker":
                     schema = z.string().min(1, `${field.label} is required`);
@@ -23,8 +37,13 @@ export const generateFormSchema = (formData: FormSchema) => {
                 case "Text area":
                     schema = z
                         .string()
-                        .min(field.minWords || 10, `${field.label} is too short`)
-                        .max(field.maxWords || 200, `${field.label} is too long`);
+                        .min(field.required ? 1 : 0, `${field.label} is required`)
+                        .refine((value) => checkMinWord(value, field.minWords), {
+                            message: `Minimum ${field.minWords} words required`,
+                        })
+                        .refine((value) => checkMaxWord(value, field.maxWords), {
+                            message: `Maximum ${field.maxWords} words allowed`,
+                        });
                     break;
 
                 case "Radio":
@@ -56,4 +75,17 @@ export const generateFormSchema = (formData: FormSchema) => {
             return acc;
         }, {})
     );
+};
+
+
+const checkMinWord = (value: string, minWords: number | undefined) => {
+    if (minWords === undefined) return true;
+    const wordCount = value.trim().split(/\s+/).length;
+    return wordCount >= minWords;
+};
+
+const checkMaxWord = (value: string, maxWords: number | undefined) => {
+    if (maxWords == undefined) return true;
+    const wordCount = value.trim().split(/\s+/).length;
+    return wordCount <= maxWords;
 };
