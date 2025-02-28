@@ -4,19 +4,8 @@ import { GalleryVerticalEnd } from "lucide-react"
 import loginImage from "../../public/loginImage.png"
 import { LoginForm } from "../ui/login-form"
 import Image from "next/image"
-import { useEffect } from "react";
 
 export default function LoginPage() {
-
-       useEffect(() => {
-            document.body.style.overflow = 'hidden';
-            document.documentElement.style.overflow = 'hidden';
-    
-            return () => {
-                document.body.style.overflow = '';
-                document.documentElement.style.overflow = '';
-            };
-        }, []);
   return (
     <div className="grid min-h-screen w-full overflow-hidden lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">

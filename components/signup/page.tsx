@@ -4,19 +4,8 @@ import { GalleryVerticalEnd } from "lucide-react";
 import loginImage from "../../public/loginImage.png";
 import Image from "next/image";
 import { SignupForm } from "../ui/signup-form";
-import { useEffect } from "react";
 
 export default function SignupPage() {
-    useEffect(() => {
-        document.body.style.overflow = 'hidden';
-        document.documentElement.style.overflow = 'hidden';
-
-        return () => {
-            document.body.style.overflow = '';
-            document.documentElement.style.overflow = '';
-        };
-    }, []);
-
     return (
         <div
             className="grid h-screen w-full lg:grid-cols-2"
