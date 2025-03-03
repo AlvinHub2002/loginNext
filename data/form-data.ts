@@ -1,10 +1,41 @@
-import { FormSchema } from "@/types/form-schema";
+import {FormSchema} from "@/types/form-schema";
 
 export const sampleFormData: FormSchema = {
     formId: "form001",
     formTitle: "IEEE Form",
     description: "Please fill out this form.",
     formFields: [
+        {
+            fieldId: "dynamicList1",
+            fieldType: "Dynamic List",
+            label: "Dynamic List Example",
+            description: "Please provide the following details in each row.",
+            required: true,
+            dynamicList: [
+                {
+                    columnId: "name",
+                    label: "Name",
+                    placeholder: "Enter name",
+                    required: true,
+                    fieldType: "text",
+                },
+                {
+                    columnId: "age",
+                    label: "Age",
+                    placeholder: "Enter age",
+                    required: true,
+                    fieldType: "number",
+                },
+                {
+                    columnId: "gender",
+                    label: "Gender",
+                    placeholder: "Select gender",
+                    required: false,
+                    fieldType: "dropdown",
+                    options: ["Male", "Female", "Other"],
+                },
+            ],
+        },
         {
             fieldId: "fullName",
             fieldType: "Short Input Fields",
