@@ -1,32 +1,33 @@
 "use client";
 
-import {zodResolver} from "@hookform/resolvers/zod";
-import {useForm, Controller} from "react-hook-form";
-import {z} from "zod";
-import {LocalizationProvider} from "@mui/x-date-pickers/LocalizationProvider";
-import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
-import {TimePicker} from "@mui/x-date-pickers/TimePicker";
-import {DatePicker} from "@mui/x-date-pickers/DatePicker";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm, Controller } from "react-hook-form";
+import { z } from "zod";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { TimePicker } from "@mui/x-date-pickers/TimePicker";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
 
-import {Button} from "@/components/ui/button";
-import {Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {Input} from "@/components/ui/input";
-import {Textarea} from "@/components/ui/textarea";
-import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {Checkbox} from "@/components/ui/checkbox";
-import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group";
-import {useMemo} from "react";
-import {generateFormSchema} from "@/lib/generate-form-schema";
-import {FormSchema} from "@/types/form-schema";
-import {useEffect, useState} from "react";
-import {DynamicList} from "@/components/ui/dynamic-list";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { useMemo } from "react";
+import { generateFormSchema } from "@/lib/generate-form-schema";
+import { FormSchema } from "@/types/form-schema";
+import { useEffect, useState } from "react";
+import { DynamicList } from "@/components/ui/dynamic-list";
+import { GridRowsProp } from "@mui/x-data-grid";
 
 interface FormProps {
     formData: FormSchema;
 }
 
-export function SampleForm({formData}: FormProps) {
+export function SampleForm({ formData }: FormProps) {
     const [formSchema, setFormSchema] = useState(generateFormSchema(formData.formFields));
 
     const form = useForm<z.infer<typeof formSchema>>({
@@ -40,7 +41,7 @@ export function SampleForm({formData}: FormProps) {
     const {
         control,
         handleSubmit,
-        formState: {errors},
+        formState: { errors },
         watch,
     } = form;
 
@@ -53,7 +54,7 @@ export function SampleForm({formData}: FormProps) {
         return formData.formFields.filter((field) => {
             if (!field.conditionalLogic) return true;
 
-            const {fieldId, value, operator} = field.conditionalLogic;
+            const { fieldId, value, operator } = field.conditionalLogic;
             const dependencyValue = watchFields[fieldId];
 
             switch (operator) {
@@ -77,6 +78,46 @@ export function SampleForm({formData}: FormProps) {
         console.log(data);
     }
 
+
+    const initialRows: GridRowsProp = [
+        {
+            id: 1,
+            name: "John Doe",
+            age: 25,
+            joinDate: new Date("2023-01-15"),
+            role: "market",
+        },
+        {
+            id: 2,
+            name: "Jane Smith",
+            age: 36,
+            joinDate: new Date("2022-05-20"),
+            role: "finance",
+        },
+        {
+            id: 3,
+            name: "Bob Johnson",
+            age: 19,
+            joinDate: new Date("2023-03-10"),
+            role: "development",
+        },
+        {
+            id: 4,
+            name: "Alice Brown",
+            age: 28,
+            joinDate: new Date("2021-11-25"),
+            role: "market",
+        },
+        {
+            id: 5,
+            name: "Charlie Davis",
+            age: 23,
+            joinDate: new Date("2023-07-30"),
+            role: "finance",
+        },
+    ];
+
+
     return (
         <Form {...form}>
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 p-10 w-full max-w-4xl mx-auto">
@@ -87,7 +128,13 @@ export function SampleForm({formData}: FormProps) {
 
                     if (field.fieldType === "Dynamic List") {
                         if (!field.dynamicList) return null;
-                        return <DynamicList key={field.fieldId}/>;
+                        return (
+                            <div key={field.fieldId}>
+                                <FormLabel>{field.label}</FormLabel>
+                                <FormDescription>{field.description}</FormDescription>
+                                <DynamicList key={field.fieldId} columns={field.dynamicList} initialRows={[]} />
+                            </div>
+                        );
                     }
 
                     return (
@@ -95,7 +142,7 @@ export function SampleForm({formData}: FormProps) {
                             key={field.fieldId}
                             control={control}
                             name={field.fieldId}
-                            render={({field: formField}) => (
+                            render={({ field: formField }) => (
                                 <FormItem>
                                     <FormLabel>
                                         {field.label}
@@ -117,14 +164,14 @@ export function SampleForm({formData}: FormProps) {
 
                                                 case "Text area":
                                                     return <Textarea {...formField}
-                                                                     className="border p-2 rounded w-full resize-none"/>;
+                                                        className="border p-2 rounded w-full resize-none" />;
 
                                                 case "Dropdown":
                                                     return (
                                                         <Select onValueChange={formField.onChange}
-                                                                value={formField.value || ""}>
+                                                            value={formField.value || ""}>
                                                             <SelectTrigger>
-                                                                <SelectValue/>
+                                                                <SelectValue />
                                                             </SelectTrigger>
                                                             <SelectContent>
                                                                 {field.options?.map((option) => (
@@ -140,12 +187,12 @@ export function SampleForm({formData}: FormProps) {
                                                     // TODO: Change type of RadioItem from string to a object with id, label and value
                                                     return (
                                                         <RadioGroup onValueChange={formField.onChange}
-                                                                    defaultValue={formField.value}>
+                                                            defaultValue={formField.value}>
                                                             {field.options?.map((option) => (
                                                                 <FormItem key={option}
-                                                                          className="flex items-center space-x-3 space-y-0">
+                                                                    className="flex items-center space-x-3 space-y-0">
                                                                     <FormControl>
-                                                                        <RadioGroupItem value={option}/>
+                                                                        <RadioGroupItem value={option} />
                                                                     </FormControl>
                                                                     <FormLabel
                                                                         className="text-sm font-normal">{option}</FormLabel>
@@ -163,9 +210,9 @@ export function SampleForm({formData}: FormProps) {
                                                                     key={option}
                                                                     control={form.control}
                                                                     name={field.fieldId}
-                                                                    render={({field: formField}) => (
+                                                                    render={({ field: formField }) => (
                                                                         <FormItem key={option}
-                                                                                  className="flex flex-row items-center space-x-3 space-y-0">
+                                                                            className="flex flex-row items-center space-x-3 space-y-0">
                                                                             <FormControl>
                                                                                 <Checkbox
                                                                                     checked={formField.value?.includes(option)}
@@ -192,7 +239,7 @@ export function SampleForm({formData}: FormProps) {
                                                         <Controller
                                                             control={control}
                                                             name={field.fieldId}
-                                                            render={({field: {onChange, ref}}) => (
+                                                            render={({ field: { onChange, ref } }) => (
                                                                 <Input
                                                                     type="file"
                                                                     onChange={(e) => onChange(e.target.files?.[0])}
@@ -210,7 +257,7 @@ export function SampleForm({formData}: FormProps) {
                                                             <Controller
                                                                 control={control}
                                                                 name={field.fieldId}
-                                                                render={({field: formField}) => (
+                                                                render={({ field: formField }) => (
                                                                     <div className="w-full">
                                                                         <DatePicker
                                                                             value={formField.value ? dayjs(formField.value, "DD/MM/YYYY") : null}
@@ -247,7 +294,7 @@ export function SampleForm({formData}: FormProps) {
                                                             <Controller
                                                                 control={control}
                                                                 name={field.fieldId}
-                                                                render={({field: formField}) => (
+                                                                render={({ field: formField }) => (
                                                                     <div className="w-full">
                                                                         <TimePicker
                                                                             value={formField.value ? dayjs(formField.value, "HH:mm") : null}

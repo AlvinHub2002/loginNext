@@ -1,4 +1,4 @@
-import {FormSchema} from "@/types/form-schema";
+import { FormSchema } from "@/types/form-schema";
 
 export const sampleFormData: FormSchema = {
     formId: "form001",
@@ -8,31 +8,43 @@ export const sampleFormData: FormSchema = {
         {
             fieldId: "dynamicList1",
             fieldType: "Dynamic List",
-            label: "Dynamic List Example",
+            label: "User Details",
             description: "Please provide the following details in each row.",
             required: true,
             dynamicList: [
                 {
-                    columnId: "name",
-                    label: "Name",
-                    placeholder: "Enter name",
-                    required: true,
-                    fieldType: "text",
+                    field: "name",
+                    headerName: "Name",
+                    editable: true,
+                    flex: 1
                 },
                 {
-                    columnId: "age",
-                    label: "Age",
-                    placeholder: "Enter age",
-                    required: true,
-                    fieldType: "number",
+                    field: "age",
+                    headerName: "Age",
+                    type: "number",
+                    align: "left",
+                    headerAlign: "left",
+                    editable: true,
+                    flex: 1,
                 },
                 {
-                    columnId: "gender",
-                    label: "Gender",
-                    placeholder: "Select gender",
-                    required: false,
-                    fieldType: "dropdown",
-                    options: ["Male", "Female", "Other"],
+                    field: "joinDate",
+                    headerName: "Join date",
+                    type: "date",
+                    editable: true,
+                    flex: 1,
+                },
+                {
+                    field: "department",
+                    headerName: "Department",
+                    editable: true,
+                    type: "singleSelect",
+                    valueOptions: [
+                        { label: "Market", value: "market" },
+                        { label: "Finance", value: "finance" },
+                        { label: "Development", value: "development" }
+                    ],
+                    flex: 1,
                 },
             ],
         },

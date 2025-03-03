@@ -1,3 +1,5 @@
+import { GridColDef } from "@mui/x-data-grid";
+
 export interface FormSchema {
   formId: string;
   formTitle: string;
@@ -8,17 +10,17 @@ export interface FormSchema {
 export interface FormField {
   fieldId: string;
   fieldType:
-    | "Short Input Fields"
-    | "IEEE Member ID"
-    | "Email"
-    | "Text area"
-    | "Radio"
-    | "Multiple choice"
-    | "File upload"
-    | "Dropdown"
-    | "Date Picker"
-    | "Time picker"
-    | "Dynamic List";
+  | "Short Input Fields"
+  | "IEEE Member ID"
+  | "Email"
+  | "Text area"
+  | "Radio"
+  | "Multiple choice"
+  | "File upload"
+  | "Dropdown"
+  | "Date Picker"
+  | "Time picker"
+  | "Dynamic List";
   label: string;
   description: string;
   placeholder?: string;
@@ -29,22 +31,22 @@ export interface FormField {
   fileTypes?: string[];
   maxFileSize?: number;
   conditionalLogic?: ConditionalLogic;
-  dynamicList?: unknown;
+  dynamicList?: GridColDef[];
 }
 
 export interface DynamicListColumn {
   columnId: string;
   fieldType:
-    | "Short Input Fields"
-    | "IEEE Member ID"
-    | "Email"
-    | "Text area"
-    | "Radio"
-    | "Multiple choice"
-    | "File upload"
-    | "Dropdown"
-    | "Date Picker"
-    | "Time picker";
+  | "Short Input Fields"
+  | "IEEE Member ID"
+  | "Email"
+  | "Text area"
+  | "Radio"
+  | "Multiple choice"
+  | "File upload"
+  | "Dropdown"
+  | "Date Picker"
+  | "Time picker";
   label: string;
   placeholder?: string;
   required: boolean;
