@@ -21,7 +21,6 @@ import { generateFormSchema } from "@/lib/generate-form-schema";
 import { FormSchema } from "@/types/form-schema";
 import { useEffect, useState } from "react";
 import { DynamicList } from "@/components/ui/dynamic-list";
-import { GridRowsProp } from "@mui/x-data-grid";
 
 interface FormProps {
     formData: FormSchema;
@@ -77,46 +76,6 @@ export function SampleForm({ formData }: FormProps) {
     function onSubmit(data: z.infer<typeof formSchema>) {
         console.log(data);
     }
-
-
-    const initialRows: GridRowsProp = [
-        {
-            id: 1,
-            name: "John Doe",
-            age: 25,
-            joinDate: new Date("2023-01-15"),
-            role: "market",
-        },
-        {
-            id: 2,
-            name: "Jane Smith",
-            age: 36,
-            joinDate: new Date("2022-05-20"),
-            role: "finance",
-        },
-        {
-            id: 3,
-            name: "Bob Johnson",
-            age: 19,
-            joinDate: new Date("2023-03-10"),
-            role: "development",
-        },
-        {
-            id: 4,
-            name: "Alice Brown",
-            age: 28,
-            joinDate: new Date("2021-11-25"),
-            role: "market",
-        },
-        {
-            id: 5,
-            name: "Charlie Davis",
-            age: 23,
-            joinDate: new Date("2023-07-30"),
-            role: "finance",
-        },
-    ];
-
 
     return (
         <Form {...form}>

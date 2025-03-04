@@ -1,19 +1,18 @@
 import * as React from "react";
+import toast from "react-hot-toast";
 
 import {
-  GridRowsProp,
-  GridRowModesModel,
-  GridRowModes,
   DataGrid,
-  GridColDef,
   GridActionsCellItem,
+  GridColDef,
   GridEventListener,
+  GridRowEditStopReasons,
   GridRowId,
   GridRowModel,
-  GridRowEditStopReasons,
-  GridNoRowsOverlay,
+  GridRowModes,
+  GridRowModesModel,
+  GridRowsProp,
 } from "@mui/x-data-grid";
-
 import {
   AlertDialog,
   AlertDialogAction,
@@ -23,7 +22,8 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/ui/alert-dialog"
+} from "@/components/ui/alert-dialog";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
@@ -31,14 +31,6 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 import { Button } from "@/components/ui/button";
-import toast from "react-hot-toast";
-
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip"
 
 interface DynamicListProps {
   columns: GridColDef[];
@@ -54,7 +46,8 @@ export function DynamicList({ columns, initialRows = [] }: DynamicListProps) {
       event.defaultMuiPrevented = true;
     }
 
-    if ((event as React.KeyboardEvent).key === 'Enter') { //preventing triggering of submit event on enter key press
+    if ((event as React.KeyboardEvent).key === "Enter") {
+      //preventing triggering of submit event on enter key press
       (event as React.KeyboardEvent).preventDefault();
       (event as React.KeyboardEvent).stopPropagation();
     }
@@ -77,13 +70,13 @@ export function DynamicList({ columns, initialRows = [] }: DynamicListProps) {
       return;
     }
     setRows(rows.filter((row) => row.id !== deleteRecordId));
-    toast.success("Record deleted successfully", { position: 'top-right' });
+    toast.success("Record deleted successfully", { position: "top-right" });
     setDeleteRecordId(null);
   };
 
   const handleCancel = () => {
     setDeleteRecordId(null);
-  }
+  };
 
   const handleCancelClick = (id: GridRowId) => () => {
     setRowModesModel({
@@ -106,12 +99,12 @@ export function DynamicList({ columns, initialRows = [] }: DynamicListProps) {
 
     const updatedRow = { ...newRow, isNew: false };
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
-    toast.success("Record updated successfully", { position: 'top-right' });
+    toast.success("Record updated successfully", { position: "top-right" });
     return updatedRow;
   };
 
   const handleProcessRowUpdateError = React.useCallback((error: Error) => {
-    toast.error(error.message, { position: 'top-right' });
+    toast.error(error.message, { position: "top-right" });
   }, []);
 
   const handleRowModesModelChange = (newRowModesModel: GridRowModesModel) => {
@@ -131,7 +124,8 @@ export function DynamicList({ columns, initialRows = [] }: DynamicListProps) {
         if (isInEditMode) {
           return [
             <GridActionsCellItem
-              key="save" icon={
+              key="save"
+              icon={
                 <TooltipProvider>
                   <Tooltip>
                     <TooltipTrigger asChild>
@@ -187,7 +181,6 @@ export function DynamicList({ columns, initialRows = [] }: DynamicListProps) {
             className="textPrimary"
             onClick={handleEditClick(id)}
             color="inherit"
-
           />,
           <GridActionsCellItem
             key="delete"
@@ -221,7 +214,7 @@ export function DynamicList({ columns, initialRows = [] }: DynamicListProps) {
     }
 
     return (
-      <AlertDialog open={!!deleteRecordId} >
+      <AlertDialog open={!!deleteRecordId}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Confirm Deletion</AlertDialogTitle>
@@ -254,42 +247,39 @@ export function DynamicList({ columns, initialRows = [] }: DynamicListProps) {
         onRowEditStop={handleRowEditStop}
         processRowUpdate={processRowUpdate}
         onProcessRowUpdateError={handleProcessRowUpdateError}
-        //@ts-ignore
+        // @ts-ignore
         slots={{ noRowsOverlay: AddRowButton }}
         // @ts-ignore
         slotProps={{ noRowsOverlay: { columns, setRows, setRowModesModel, isNew: true } }}
-        sx={
-          {
-            // border: 0,
-            // "& .MuiDataGrid-main": {
-            //   border: '1px solid hsl(var(--border))',
-            //   borderRadius: '5px',
-            // },
-            // "& .css-1nszl05-MuiDataGrid-root": {
-            //   flexDirection: 'column-reverse',
-            // },
-            "& .MuiOutlinedInput-notchedOutline": {
-              border: "none", // For removing select input border in data grid
-            },
-            // '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
-            //   border: '1px solid hsl(var(--border))',
-            // },
-            // '& .MuiDataGrid-columnsContainer, .MuiDataGrid-cell': {
-            //   border: '1px solid hsl(var(--border))',
-            //   borderRadius: '0px',
-            // },
-            // '& .MuiDataGrid-columnSeparator--resizable': {
-            //   color: 'transparent'
-            // },
-            '& .MuiDataGrid-row--editing .MuiDataGrid-cell': {
-              backgroundColor: 'oklch(0.97 0 0) !important',
-              // border: '1px solid hsl(var(--secondary))',
-            },
-          }}
+        sx={{
+          // border: 0,
+          // "& .MuiDataGrid-main": {
+          //   border: '1px solid hsl(var(--border))',
+          //   borderRadius: '5px',
+          // },
+          // "& .css-1nszl05-MuiDataGrid-root": {
+          //   flexDirection: 'column-reverse',
+          // },
+          "& .MuiOutlinedInput-notchedOutline": {
+            border: "none", // For removing select input border in data grid
+          },
+          // '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
+          //   border: '1px solid hsl(var(--border))',
+          // },
+          // '& .MuiDataGrid-columnsContainer, .MuiDataGrid-cell': {
+          //   border: '1px solid hsl(var(--border))',
+          //   borderRadius: '0px',
+          // },
+          // '& .MuiDataGrid-columnSeparator--resizable': {
+          //   color: 'transparent'
+          // },
+          "& .MuiDataGrid-row--editing .MuiDataGrid-cell": {
+            backgroundColor: "oklch(0.97 0 0) !important",
+            // border: '1px solid hsl(var(--secondary))',
+          },
+        }}
       />
-      {rows.length > 0 &&
-        <AddRowButton columns={columns} setRows={setRows} setRowModesModel={setRowModesModel} />
-      }
+      {rows.length > 0 && <AddRowButton columns={columns} setRows={setRows} setRowModesModel={setRowModesModel} />}
     </div>
   );
 }
@@ -302,54 +292,44 @@ interface AddRowButtonProps {
 }
 
 function AddRowButton({ columns, setRows, setRowModesModel, isNew = false }: AddRowButtonProps) {
-
   const generateNewRow = () => {
-    const id = Math.floor(Math.random() * 100000);
-    const newRow = columns.reduce((acc: { [key: string]: any }, column) => {
-      switch (column.type) {
-        case "string":
-          acc[column.field] = "";
-          break;
-        case "date":
-          acc[column.field] = new Date();
-          break;
-        case "number":
-          acc[column.field] = undefined;
-          break;
-        case "boolean":
-          acc[column.field] = false;
-          break;
-        case "singleSelect":
-          acc[column.field] = '';
-          break;
-        case "dateTime":
-          acc[column.field] = new Date();
-          break;
-        default:
-          acc[column.field] = "";
-          break;
-      }
-      return acc;
-    }, { id, isNew: true });
-    return newRow;
-  }
+    const id = `${Math.floor(Math.random() * 100000)}`;
 
+    const defaultValues: Record<string, any> = {
+      string: "",
+      singleSelect: "",
+      number: null,
+      boolean: false,
+      date: null,
+      dateTime: null,
+    };
 
+    return columns.reduce<{ [key: string]: any }>(
+      (acc, column) => {
+        acc[column.field] = defaultValues[column.type as keyof typeof defaultValues] ?? "";
+        return acc;
+      },
+      { id, isNew: true }
+    );
+  };
 
   const handleClick = () => {
     const newRow = generateNewRow();
     setRows((oldRows) => [...oldRows, { ...newRow, isNew: true }]);
     setRowModesModel((oldModel) => ({
-      ...oldModel, [newRow.id]: { mode: GridRowModes.Edit, fieldToFocus: columns[0].field },
+      ...oldModel,
+      [newRow.id]: { mode: GridRowModes.Edit, fieldToFocus: columns[0].field },
     }));
   };
 
   if (isNew) {
     return (
       <div className="h-full flex justify-center items-center">
-        <Button size="sm" type="button" onClick={handleClick}>Add Row</Button>
+        <Button size="sm" type="button" onClick={handleClick}>
+          Add Row
+        </Button>
       </div>
-    )
+    );
   }
 
   return (
