@@ -16,7 +16,8 @@ export const sampleFormData: FormSchema = {
                     field: "name",
                     headerName: "Name",
                     editable: true,
-                    flex: 1
+                    flex: 1,
+                    minWidth: 150,
                 },
                 {
                     field: "age",
@@ -26,6 +27,7 @@ export const sampleFormData: FormSchema = {
                     headerAlign: "left",
                     editable: true,
                     flex: 1,
+                    minWidth: 150,
                 },
                 {
                     field: "joinDate",
@@ -33,6 +35,7 @@ export const sampleFormData: FormSchema = {
                     type: "date",
                     editable: true,
                     flex: 1,
+                    minWidth: 150,
                 },
                 {
                     field: "department",
@@ -45,6 +48,7 @@ export const sampleFormData: FormSchema = {
                         { label: "Development", value: "development" }
                     ],
                     flex: 1,
+                    minWidth: 150,
                 },
             ],
         },

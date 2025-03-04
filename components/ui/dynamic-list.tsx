@@ -203,6 +203,7 @@ export function DynamicList({ columns, initialRows = [] }: DynamicListProps) {
         ];
       },
       flex: 1,
+      minWidth: 120,
     },
   ];
 
@@ -232,54 +233,55 @@ export function DynamicList({ columns, initialRows = [] }: DynamicListProps) {
   };
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col relative">
       {renderDeleteDialog()}
-      <DataGrid
-        rows={rows}
-        columns={[...columns, ...actionColumn]}
-        rowSelection={false}
-        disableColumnSorting
-        disableColumnMenu
-        hideFooter={true}
-        editMode="row"
-        rowModesModel={rowModesModel}
-        onRowModesModelChange={handleRowModesModelChange}
-        onRowEditStop={handleRowEditStop}
-        processRowUpdate={processRowUpdate}
-        onProcessRowUpdateError={handleProcessRowUpdateError}
-        // @ts-ignore
-        slots={{ noRowsOverlay: AddRowButton }}
-        // @ts-ignore
-        slotProps={{ noRowsOverlay: { columns, setRows, setRowModesModel, isNew: true } }}
-        sx={{
-          // border: 0,
-          // "& .MuiDataGrid-main": {
-          //   border: '1px solid hsl(var(--border))',
-          //   borderRadius: '5px',
-          // },
-          // "& .css-1nszl05-MuiDataGrid-root": {
-          //   flexDirection: 'column-reverse',
-          // },
-          "& .MuiOutlinedInput-notchedOutline": {
-            border: "none", // For removing select input border in data grid
-          },
-          // '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
-          //   border: '1px solid hsl(var(--border))',
-          // },
-          // '& .MuiDataGrid-columnsContainer, .MuiDataGrid-cell': {
-          //   border: '1px solid hsl(var(--border))',
-          //   borderRadius: '0px',
-          // },
-          // '& .MuiDataGrid-columnSeparator--resizable': {
-          //   color: 'transparent'
-          // },
-          "& .MuiDataGrid-row--editing .MuiDataGrid-cell": {
-            backgroundColor: "oklch(0.97 0 0) !important",
-            // border: '1px solid hsl(var(--secondary))',
-          },
-        }}
-      />
-      {rows.length > 0 && <AddRowButton columns={columns} setRows={setRows} setRowModesModel={setRowModesModel} />}
+      <div style={{ height: rows.length > 0 ? `${(rows.length * 52) + 110}px` : 'auto' }}>
+        <DataGrid
+          rows={rows}
+          columns={[...columns, ...actionColumn]}
+          rowSelection={false}
+          disableColumnSorting
+          disableColumnMenu
+          hideFooter={rows.length === 0}
+          editMode="row"
+          rowModesModel={rowModesModel}
+          onRowModesModelChange={handleRowModesModelChange}
+          onRowEditStop={handleRowEditStop}
+          processRowUpdate={processRowUpdate}
+          onProcessRowUpdateError={handleProcessRowUpdateError}
+          // @ts-ignore
+          slots={{ noRowsOverlay: AddRowButton, footer: AddRowButton }}
+          // @ts-ignore
+          slotProps={{ noRowsOverlay: { columns, setRows, setRowModesModel, isNew: true }, footer: { columns, setRows, setRowModesModel } }}
+          sx={{
+            // border: 0,
+            // "& .MuiDataGrid-main": {
+            //   border: '1px solid hsl(var(--border))',
+            //   borderRadius: '5px',
+            // },
+            // "& .css-1nszl05-MuiDataGrid-root": {
+            //   flexDirection: 'column-reverse',
+            // },
+            "& .MuiOutlinedInput-notchedOutline": {
+              border: "none", // For removing select input border in data grid
+            },
+            // '& .MuiDataGrid-columnHeader, .MuiDataGrid-cell': {
+            //   border: '1px solid hsl(var(--border))',
+            // },
+            // '& .MuiDataGrid-columnsContainer, .MuiDataGrid-cell': {
+            //   border: '1px solid hsl(var(--border))',
+            //   borderRadius: '0px',
+            // },
+            // '& .MuiDataGrid-columnSeparator--resizable': {
+            //   color: 'transparent'
+            // },
+            "& .MuiDataGrid-row--editing .MuiDataGrid-cell": {
+              backgroundColor: "oklch(0.97 0 0) !important",
+              // border: '1px solid hsl(var(--secondary))',
+            },
+          }}
+        />
+      </div>
     </div>
   );
 }
@@ -333,7 +335,7 @@ function AddRowButton({ columns, setRows, setRowModesModel, isNew = false }: Add
   }
 
   return (
-    <div className="flex justify-center scale-90">
+    <div className="flex w-full justify-center scale-90 absolute" style={{ bottom: "calc(calc(var(--DataGrid-hasScrollX)*6px) + 6px)" }}>
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger asChild>
@@ -341,7 +343,7 @@ function AddRowButton({ columns, setRows, setRowModesModel, isNew = false }: Add
               <AddIcon className="!size-6" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent side="bottom">
+          <TooltipContent side="right" >
             <p>Add Row</p>
           </TooltipContent>
         </Tooltip>
