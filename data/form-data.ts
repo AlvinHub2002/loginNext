@@ -6,6 +6,53 @@ export const sampleFormData: FormSchema = {
     description: "Please fill out this form.",
     formFields: [
         {
+            fieldId: "dynamicList1",
+            fieldType: "Dynamic List",
+            label: "User Details",
+            description: "Please provide the following details in each row.",
+            required: true,
+            dynamicList: [
+                {
+                    field: "name",
+                    headerName: "Name",
+                    editable: true,
+                    flex: 1,
+                    minWidth: 150,
+                },
+                {
+                    field: "age",
+                    headerName: "Age",
+                    type: "number",
+                    align: "left",
+                    headerAlign: "left",
+                    editable: true,
+                    flex: 1,
+                    minWidth: 150,
+                },
+                {
+                    field: "joinDate",
+                    headerName: "Join date",
+                    type: "date",
+                    editable: true,
+                    flex: 1,
+                    minWidth: 150,
+                },
+                {
+                    field: "department",
+                    headerName: "Department",
+                    editable: true,
+                    type: "singleSelect",
+                    valueOptions: [
+                        { label: "Market", value: "market" },
+                        { label: "Finance", value: "finance" },
+                        { label: "Development", value: "development" }
+                    ],
+                    flex: 1,
+                    minWidth: 150,
+                },
+            ],
+        },
+        {
             fieldId: "fullName",
             fieldType: "Short Input Fields",
             label: "Full Name",
