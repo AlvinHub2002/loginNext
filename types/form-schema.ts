@@ -20,7 +20,8 @@ export interface FormField {
   | "Dropdown"
   | "Date Picker"
   | "Time picker"
-  | "Dynamic List";
+  | "Dynamic List"
+  | "Sub Heading";
   label: string;
   description: string;
   placeholder?: string;

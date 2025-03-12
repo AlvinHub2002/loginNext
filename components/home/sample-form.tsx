@@ -125,6 +125,9 @@ export function SampleForm({ formData }: FormProps) {
                                                     return <Textarea {...formField}
                                                         className="border p-2 rounded w-full resize-none" />;
 
+                                                case "Sub Heading":
+                                                            return <h3></h3>;
+        
                                                 case "Dropdown":
                                                     return (
                                                         <Select onValueChange={formField.onChange}
