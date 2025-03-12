@@ -3,7 +3,6 @@ import { FormField } from "@/types/form-schema";
 
 export const generateFormSchema = (formFields: FormField[]) => {
     return z.object(
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         formFields.reduce((acc: Record<string, any>, field) => {
             let schema;
             switch (field.fieldType) {
