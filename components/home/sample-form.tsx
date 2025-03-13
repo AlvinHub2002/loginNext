@@ -76,20 +76,20 @@ export function SampleForm({ formData }: FormProps) {
 
     // const
 
-    useEffect(() => {
+    // useEffect(() => {
 
-        (async function () {
-            try {
-                await axios.get(process.env.NEXT_PUBLIC_SERVER_DOMAIN + "/api/check-tokens",{
-                    withCredentials:true
-                })
-            } catch (e) {
-                console.error(e);
-                router.push("/login")
-            }
-        })();
+    //     (async function () {
+    //         try {
+    //             await axios.get(process.env.NEXT_PUBLIC_SERVER_DOMAIN + "/api/check-tokens",{
+    //                 withCredentials:true
+    //             })
+    //         } catch (e) {
+    //             console.error(e);
+    //             router.push("/login")
+    //         }
+    //     })();
 
-    }, [])
+    // }, [])
 
     useEffect(() => {
         const newSchema = generateFormSchema(visibleFields);
