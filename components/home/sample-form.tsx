@@ -84,7 +84,7 @@ export function SampleForm({ formData }: FormProps) {
                     withCredentials:true
                 })
             } catch (e) {
-                // console.error(e);
+                console.error(e);
                 router.push("/login")
             }
         })();
