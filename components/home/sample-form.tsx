@@ -8,7 +8,7 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import dayjs from "dayjs";
-
+import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -21,16 +21,22 @@ import { generateFormSchema } from "@/lib/generate-form-schema";
 import { FormSchema } from "@/types/form-schema";
 import { useEffect, useState } from "react";
 import { DynamicList } from "@/components/ui/dynamic-list";
+// import AxiosClient from '@/app/axiosClass';
+import toast from "react-hot-toast";
+import axios from "axios";
+
 
 interface FormProps {
     formData: FormSchema;
 }
 
 export function SampleForm({ formData }: FormProps) {
+    const router = useRouter();
     const [formSchema, setFormSchema] = useState(generateFormSchema(formData.formFields));
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
+        mode: "onTouched",
         defaultValues: formData.formFields.reduce((acc, field) => {
             acc[field.fieldId] = field.fieldType === "Multiple choice" ? [] : "";
             return acc;
@@ -68,13 +74,48 @@ export function SampleForm({ formData }: FormProps) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, watchFieldsArray);
 
+    // const
+
+    useEffect(() => {
+
+        (async function () {
+            try {
+                await axios.get(process.env.NEXT_PUBLIC_SERVER_DOMAIN + "/api/check-tokens",{
+                    withCredentials:true
+                })
+            } catch (e) {
+                // console.error(e);
+                router.push("/login")
+            }
+        })();
+
+    }, [])
+
     useEffect(() => {
         const newSchema = generateFormSchema(visibleFields);
         setFormSchema(newSchema);
     }, [visibleFields]);
 
-    function onSubmit(data: z.infer<typeof formSchema>) {
+    async function onSubmit(data: z.infer<typeof formSchema>) {
         console.log(data);
+
+        const DataToSend: any = [];
+        const fileIndexes = Object.keys(data);
+        fileIndexes.forEach((response) => {
+            DataToSend.push({ field_id: response, response: data[response] })
+        })
+        toast.success('Respose submitted');
+        router.push("/submitted");
+
+        console.log(DataToSend);
+        // const axiosClient = new AxiosClient(process.env.NEXT_PUBLIC_SERVER_DOMAIN, '/api/v1/refresh-token', '/login');
+
+        // try {
+        //     await axiosClient.post('/api/v1/forms/upskill2025/responses',data);
+        // } catch (err) {
+        //     console.log(err)
+        // }
+
     }
 
     return (
@@ -89,7 +130,7 @@ export function SampleForm({ formData }: FormProps) {
                         if (!field.dynamicList) return null;
                         return (
                             <div key={field.fieldId}>
-                                <FormLabel>{field.label}</FormLabel>
+                                <FormLabel>{field.label} {field.required && <span className="text-destructive"> *</span>}</FormLabel>
                                 <FormDescription>{field.description}</FormDescription>
                                 <DynamicList key={field.fieldId} columns={field.dynamicList} initialRows={[]} />
                             </div>
@@ -104,7 +145,7 @@ export function SampleForm({ formData }: FormProps) {
                             render={({ field: formField }) => (
                                 <FormItem>
                                     <FormLabel>
-                                        {field.label}
+                                        {field.fieldType !== "Sub Heading" ? field.label : <h1 className="text-lg">{field.label}</h1>}
                                         {field.required && <span className="text-destructive"> *</span>}
                                     </FormLabel>
                                     <FormControl>
@@ -123,11 +164,11 @@ export function SampleForm({ formData }: FormProps) {
 
                                                 case "Text area":
                                                     return <Textarea {...formField}
-                                                        className="border p-2 rounded w-full resize-none" />;
+                                                        className="border p-2 rounded w-full" />;
 
                                                 case "Sub Heading":
-                                                            return <h3></h3>;
-        
+                                                    return <h3></h3>;
+
                                                 case "Dropdown":
                                                     return (
                                                         <Select onValueChange={formField.onChange}

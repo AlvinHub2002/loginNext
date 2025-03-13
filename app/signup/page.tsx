@@ -4,8 +4,29 @@ import { GalleryVerticalEnd } from "lucide-react";
 import loginImage from "../../public/loginImage.png";
 import Image from "next/image";
 import { SignupForm } from "../../components/ui/signup-form";
+// import axios from "axios";
+// import toast from "react-hot-toast";
 
 export default function SignupPage() {
+
+  // const handleRegistration = async (values: any) => {
+  //   // try {
+  //   //   await axios.post(process.env.NEXT_PUBLIC_SERVER_DOMAIN + "/api/v1/users", values, {
+  //   //     withCredentials: true
+  //   //   });
+  //   //   toast.success("Registration successfull", { position: "top-right" });
+  //   //   // toast({
+  //   //   //   title: "Login successfull",
+  //   //   //   description: "Redirecting to dashboard",
+  //   //   // });
+  //   // }
+  //   // catch (err) {
+  //   //   console.log(err);
+  //   //   toast.error(JSON.stringify(err))
+  //   // }
+  //   console.log(values.target.value)
+  // }
+
   return (
     <div className="grid min-h-screen w-full overflow-hidden lg:grid-cols-2">
       <div className="flex flex-col gap-4 p-6 md:p-10">
@@ -14,12 +35,12 @@ export default function SignupPage() {
             <div className="flex h-6 w-6 items-center justify-center rounded-md bg-primary text-primary-foreground">
               <GalleryVerticalEnd className="size-4" />
             </div>
-            IEEE
+            GEMS Forms
           </a>
         </div>
         <div className="flex flex-1 items-center justify-center">
           <div className="w-full max-w-xs">
-            <SignupForm />
+            <SignupForm  />
           </div>
         </div>
       </div>

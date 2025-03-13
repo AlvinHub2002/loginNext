@@ -6,24 +6,23 @@ export const sampleFormData: FormSchema = {
     "description": "",
     "formFields": [
         {
-            "fieldId": "342",
+            "fieldId": "field_001",
             "fieldType": "Sub Heading",
             "label": "Project Lead Details",
             "description": "",
-            "required": false,
+            "required": false
         },
         {
-            "fieldId": "1",
+            "fieldId": "field_002",
             "fieldType": "Short Input Fields",
             "label": "Name",
             "description": "",
             "placeholder": "Enter your full name",
             "required": true,
-            "minWords": 0,
-            "maxWords": 0
+            "minWords": 0
         },
         {
-            "fieldId": "2",
+            "fieldId": "field_003",
             "fieldType": "Email",
             "label": "Email address",
             "description": "",
@@ -31,17 +30,16 @@ export const sampleFormData: FormSchema = {
             "required": true
         },
         {
-            "fieldId": "56",
+            "fieldId": "field_004",
             "fieldType": "Short Input Fields",
             "label": "Contact number",
             "description": "",
             "placeholder": "Enter your contact number including country code",
             "required": true,
-            "minWords": 0,
-            "maxWords": 0
+            "minWords": 0
         },
         {
-            "fieldId": "3",
+            "fieldId": "field_005",
             "fieldType": "Dropdown",
             "label": "IEEE Section",
             "description": "",
@@ -149,26 +147,24 @@ export const sampleFormData: FormSchema = {
             ]
         },
         {
-            "fieldId": "4",
+            "fieldId": "field_006",
             "fieldType": "Short Input Fields",
             "label": "Affiliation: (if any)",
             "description": "",
             "placeholder": "",
             "required": false,
-            "minWords": 0,
-            "maxWords": 0
+            "minWords": 0
         },
         {
-            "fieldId": "ieeeId",
+            "fieldId": "field_007",
             "fieldType": "Short Input Fields",
             "label": "IEEE Member ID",
             "description": "",
             "placeholder": "Enter your IEEE membership ID",
-            "required": true,
+            "required": true
         },
-
         {
-            "fieldId": "5",
+            "fieldId": "field_008",
             "fieldType": "Dropdown",
             "label": "Position",
             "description": "",
@@ -182,35 +178,34 @@ export const sampleFormData: FormSchema = {
             ]
         },
         {
-            "fieldId": "6",
+            "fieldId": "field_009",
             "fieldType": "Short Input Fields",
             "label": "YP Chair Name",
             "description": "",
             "placeholder": "",
             "required": true,
             "minWords": 0,
-            "maxWords": 0,
             "conditionalLogic": {
-                fieldId: "5",
-                value: "Other",
-                operator: "equals",
-            },
+                "fieldId": "field_008",
+                "value": "Other",
+                "operator": "equals"
+            }
         },
         {
-            "fieldId": "ypchairemail",
+            "fieldId": "field_010",
             "fieldType": "Email",
             "label": "YP Chair Email",
             "description": "",
             "placeholder": "Enter your YP Chair's Email",
             "required": true,
             "conditionalLogic": {
-                fieldId: "5",
-                value: "Other",
-                operator: "equals",
-            },
+                "fieldId": "field_008",
+                "value": "Other",
+                "operator": "equals"
+            }
         },
         {
-            "fieldId": "8",
+            "fieldId": "field_011",
             "fieldType": "Dropdown",
             "label": "Mode of Activity",
             "description": "",
@@ -221,14 +216,14 @@ export const sampleFormData: FormSchema = {
             ]
         },
         {
-            "fieldId": "34242",
+            "fieldId": "field_012",
             "fieldType": "Sub Heading",
             "label": "Executive Summary",
             "description": "",
-            "required": false,
+            "required": false
         },
         {
-            "fieldId": "9",
+            "fieldId": "field_013",
             "fieldType": "Text area",
             "label": "Provide a brief overview of the proposed project (200 words maximum)",
             "description": "",
@@ -238,14 +233,14 @@ export const sampleFormData: FormSchema = {
             "maxWords": 200
         },
         {
-            "fieldId": "343244",
+            "fieldId": "field_014",
             "fieldType": "Sub Heading",
             "label": "Project Justification",
             "description": "",
-            "required": false,
+            "required": false
         },
         {
-            "fieldId": "11",
+            "fieldId": "field_015",
             "fieldType": "Text area",
             "label": "Explain how the project addresses your Affinity Group’s or Council’s needs and its importance for your Section/Council (200 words maximum):",
             "description": "",
@@ -255,14 +250,14 @@ export const sampleFormData: FormSchema = {
             "maxWords": 200
         },
         {
-            "fieldId": "343244wef",
+            "fieldId": "field_016",
             "fieldType": "Sub Heading",
             "label": "Program",
             "description": "",
-            "required": false,
+            "required": false
         },
         {
-            "fieldId": "12",
+            "fieldId": "field_017",
             "fieldType": "Multiple choice",
             "label": "Please select the themes for the program",
             "description": "",
@@ -279,7 +274,7 @@ export const sampleFormData: FormSchema = {
             ]
         },
         {
-            "fieldId": "111",
+            "fieldId": "field_018",
             "fieldType": "Text area",
             "label": "Please indicate any other themes that will be included in the program",
             "description": "",
@@ -288,110 +283,107 @@ export const sampleFormData: FormSchema = {
             "minWords": 5,
             "maxWords": 200,
             "conditionalLogic": {
-                fieldId: "12",
-                value: "Other",
-                operator: "equals",
-            },
+                "fieldId": "field_017",
+                "value": "Other",
+                "operator": "equals"
+            }
         },
         {
-            "fieldId": "32524",
+            "fieldId": "field_019",
             "fieldType": "Short Input Fields",
             "label": "Proposed timeline",
             "description": "",
             "placeholder": "",
             "required": true,
             "minWords": 0,
-            "maxWords": 0,
             "conditionalLogic": {
-                fieldId: "5",
-                value: "Other",
-                operator: "equals",
-            },
+                "fieldId": "field_008",
+                "value": "Other",
+                "operator": "equals"
+            }
         },
         {
-            fieldId: "dynamicList1",
-            fieldType: "Dynamic List",
-            label: "Tracks",
-            description: "Please provide the following details in each row.",
-            required: true,
-            dynamicList: [
+            "fieldId": "field_020",
+            "fieldType": "Dynamic List",
+            "label": "Tracks",
+            "description": "Please provide the following details in each row.",
+            "required": true,
+            "dynamicList": [
                 {
-                    field: "name",
-                    headerName: "Track Categories",
-                    editable: true,
-                    flex: 1,
-                    minWidth: 150,
-                    type: "singleSelect",
-                    valueOptions: [
-                        { label: "Talks/Keynotes", value: "Talks/Keynotes" },
-                        { label: "Panel Discussions", value: "Panel Discussions" },
-                        { label: "Workshops", value: "Workshops" },
-                        { label: "Networking", value: "Networking" },
-                        { label: "Hands-On Demonstrations", value: "Hands-On Demonstrations" },
-                        { label: "Other Programs", value: "Other Programs" }
-                    ],
+                    "field": "name",
+                    "headerName": "Track Categories",
+                    "editable": true,
+                    "flex": 1,
+                    "minWidth": 150,
+                    "type": "singleSelect",
+                    "valueOptions": [
+                        { "label": "Talks/Keynotes", "value": "Talks/Keynotes" },
+                        { "label": "Panel Discussions", "value": "Panel Discussions" },
+                        { "label": "Workshops", "value": "Workshops" },
+                        { "label": "Networking", "value": "Networking" },
+                        { "label": "Hands-On Demonstrations", "value": "Hands-On Demonstrations" },
+                        { "label": "Other Programs", "value": "Other Programs" }
+                    ]
                 },
                 {
-                    field: "title",
-                    headerName: "Title",
-                    editable: true,
-                    flex: 1,
-                    minWidth: 150,
+                    "field": "title",
+                    "headerName": "Title",
+                    "editable": true,
+                    "flex": 1,
+                    "minWidth": 150
                 },
                 {
-                    field: "objective",
-                    headerName: "Objective",
-                    editable: true,
-                    flex: 1,
-                    minWidth: 150,
+                    "field": "objective",
+                    "headerName": "Objective",
+                    "editable": true,
+                    "flex": 1,
+                    "minWidth": 150
                 },
                 {
-                    field: "speakers",
-                    headerName: "Speakers",
-                    editable: true,
-                    flex: 1,
-                    minWidth: 150,
+                    "field": "speakers",
+                    "headerName": "Speakers",
+                    "editable": true,
+                    "flex": 1,
+                    "minWidth": 150
                 },
                 {
-                    field: "collaborator",
-                    headerName: "Collaborator",
-                    editable: true,
-                    flex: 1,
-                    minWidth: 150,
+                    "field": "collaborator",
+                    "headerName": "Collaborator",
+                    "editable": true,
+                    "flex": 1,
+                    "minWidth": 150
                 },
-        
                 {
-                    field: "joinDate",
-                    headerName: "Event Date",
-                    type: "date",
-                    editable: true,
-                    flex: 1,
-                    minWidth: 150,
-                },
-            ],
+                    "field": "joinDate",
+                    "headerName": "Event Date",
+                    "type": "date",
+                    "editable": true,
+                    "flex": 1,
+                    "minWidth": 150
+                }
+            ]
         },
         {
-            "fieldId": "343e244wef",
+            "fieldId": "field_021",
             "fieldType": "Sub Heading",
             "label": "Metrics to measure its success",
             "description": "",
-            "required": false,
+            "required": false
         },
         {
-            "fieldId": "14",
+            "fieldId": "field_022",
             "fieldType": "Short Input Fields",
             "label": "Expected number of participants",
             "description": "",
             "placeholder": "",
             "required": true,
-            "minWords": 0,
-            "maxWords": 0
+            "minWords": 0
         },
         {
-            "fieldId": "15",
+            "fieldId": "field_023",
             "fieldType": "File upload",
             "label": "Budget",
-            "description": "Please use the below table to present all the expected income (including the YP fund) and detailed expenses reflected on the number of expected attendees. Please draft the budget based on the R10 matching fund policy indicated in the Terms of References (hipperlink). Before submitting the proposal,it is advised to coordinate with the Section/Council/other funding sources regarding the remaining funding support required",
+            "description": "Please use the below table to present all the expected income (including the YP fund) and detailed expenses reflected on the number of expected attendees. Please draft the budget based on the R10 matching fund policy indicated in the Terms of References (hyperlink). Before submitting the proposal, it is advised to coordinate with the Section/Council/other funding sources regarding the remaining funding support required",
             "required": true,
             "fileTypes": [
                 "jpg",
@@ -401,4 +393,4 @@ export const sampleFormData: FormSchema = {
             "maxFileSize": 10
         }
     ]
-};
+}
