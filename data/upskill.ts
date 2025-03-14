@@ -180,7 +180,7 @@ export const sampleFormData: FormSchema = {
         {
             "fieldId": "field_009",
             "fieldType": "Short Input Fields",
-            "label": "YP Chair Name",
+            "label": "YP Chair Name (Section/ Council)",
             "description": "",
             "placeholder": "",
             "required": true,
@@ -194,7 +194,7 @@ export const sampleFormData: FormSchema = {
         {
             "fieldId": "field_010",
             "fieldType": "Email",
-            "label": "YP Chair Email",
+            "label": "YP Chair Email (Section/ Council)",
             "description": "",
             "placeholder": "Enter your YP Chair's Email",
             "required": true,
