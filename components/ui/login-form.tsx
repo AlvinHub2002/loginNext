@@ -27,6 +27,7 @@ export function LoginForm({
     try {
       const response = await fetch(process.env.NEXT_PUBLIC_SERVER_DOMAIN + '/api/v1/login', {
         method: 'POST',
+        credentials: 'include',
         headers: {
           'Content-Type': 'application/json',
         },

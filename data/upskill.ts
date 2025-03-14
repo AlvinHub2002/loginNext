@@ -265,11 +265,16 @@ export const sampleFormData: FormSchema = {
             "options": [
                 "Code of Ethics for Engineers",
                 "Leadership and Entrepreneurship",
-                "Soft Skills",
-                "Sustainable Development",
-                "Engineer in Society",
+                "Soft Skills Development",
+                "Emerging Technologies (AI, IoT, Blockchain, Cybersecurity, etc.)",
+                "Sustainable Development & Green Technologies",
+                "Engineers in Society & Ethical Responsibilities",
                 "Basic Management for Engineers",
-                "Student to Young Professional Transition",
+                "Students to Young Professionals Transition",
+                "Innovation & Design Thinking",
+                "Project & Risk Management",
+                "Cybersecurity & Privacy",
+                "Workplace Diversity & Inclusion",
                 "Other"
             ]
         },
@@ -317,12 +322,12 @@ export const sampleFormData: FormSchema = {
                     "minWidth": 150,
                     "type": "singleSelect",
                     "valueOptions": [
-                        { "label": "Talks/Keynotes", "value": "Talks/Keynotes" },
-                        { "label": "Panel Discussions", "value": "Panel Discussions" },
-                        { "label": "Workshops", "value": "Workshops" },
-                        { "label": "Networking", "value": "Networking" },
-                        { "label": "Hands-On Demonstrations", "value": "Hands-On Demonstrations" },
-                        { "label": "Other Programs", "value": "Other Programs" }
+                        { "label": "Talks/Keynotes", value: "Talks/Keynotes" },
+                        { "label": "Workshops/Hands-on Demonstrations", value: "Workshops/Hands-on Demonstrations" },
+                        { "label": "Networking Sessions", value: "Networking Sessions" },
+                        { "label": "Mentoring Session", value: "Mentoring Session" },
+                        { "label": "Panel Discussions", value: "Panel Discussions" },
+                        { "label": "Other Programs", value: "Other Programs" },
                     ]
                 },
                 {
@@ -364,33 +369,93 @@ export const sampleFormData: FormSchema = {
             ]
         },
         {
-            "fieldId": "field_021",
-            "fieldType": "Sub Heading",
-            "label": "Metrics to measure its success",
-            "description": "",
-            "required": false
-        },
-        {
             "fieldId": "field_022",
             "fieldType": "Short Input Fields",
-            "label": "Expected number of participants",
-            "description": "",
+            "label": "Metrics to measure its success",
+            "description": "Number of YP members, participants, and collaborators",
             "placeholder": "",
             "required": true,
             "minWords": 0
         },
         {
             "fieldId": "field_023",
-            "fieldType": "File upload",
-            "label": "Budget",
-            "description": "Please use the below table to present all the expected income (including the YP fund) and detailed expenses reflected on the number of expected attendees. Please draft the budget based on the R10 matching fund policy indicated in the Terms of References (hyperlink). Before submitting the proposal, it is advised to coordinate with the Section/Council/other funding sources regarding the remaining funding support required",
+            "fieldType": "Text area",
+            "label": "Impact",
+            "description": "A description of how the planned activity can benefit the professional development of YP members",
+            "placeholder": "",
             "required": true,
-            "fileTypes": [
-                "jpg",
-                "png",
-                "pdf"
-            ],
-            "maxFileSize": 10
-        }
+            "minWords": 0
+        },
+        {
+            "fieldId": "field_024",
+            "fieldType": "Dynamic List",
+            "label": "Expected Income",
+            "description": "",
+            "required": true,
+            "dynamicList": [
+
+                {
+                    "field": "IncomeSource",
+                    "headerName": "Income Source Name",
+                    "editable": true,
+                    "flex": 1,
+                    "minWidth": 150
+                },
+                {
+                    "field": "SourceIncome",
+                    "headerName": "Source Income",
+                    "editable": true,
+                    "flex": 1,
+                    "minWidth": 150
+                }
+            ]
+        },
+        {
+            "fieldId": "field_025",
+            "fieldType": "Short Input Fields",
+            "label": "Total Expected Income (USD)",
+            "description": "",
+            "placeholder": "",
+            "required": true,
+            "minWords": 0
+        },
+        {
+            "fieldId": "field_026",
+            "fieldType": "Dynamic List",
+            "label": "Expected Income",
+            "description": "",
+            "required": true,
+            "dynamicList": [
+
+                {
+                    "field": "ItemName/Description",
+                    "headerName": "Item Name/Description",
+                    "editable": true,
+                    "flex": 1,
+                    "minWidth": 150
+                },
+                {
+                    "field": "Quantity",
+                    "headerName": "Quantity",
+                    "editable": true,
+                    "flex": 1,
+                    "minWidth": 150
+                },
+                {
+                    "field": "UnitPrice",
+                    "headerName": "Unit Price",
+                    "editable": true,
+                    "flex": 1,
+                    "minWidth": 150
+                },
+                {
+                    "field": "TotalPrice",
+                    "headerName": "Total Price",
+                    "editable": true,
+                    "flex": 1,
+                    "minWidth": 150
+                }
+            ]
+        },
     ]
 }

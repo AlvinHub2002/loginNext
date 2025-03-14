@@ -23,7 +23,7 @@ import { useEffect, useState } from "react";
 import { DynamicList } from "@/components/ui/dynamic-list";
 // import AxiosClient from '@/app/axiosClass';
 import toast from "react-hot-toast";
-// import axios from "axios";
+import axios from "axios";
 
 
 interface FormProps {
@@ -76,20 +76,20 @@ export function SampleForm({ formData }: FormProps) {
 
     // const
 
-    // useEffect(() => {
+    useEffect(() => {
 
-    //     (async function () {
-    //         try {
-    //             await axios.get(process.env.NEXT_PUBLIC_SERVER_DOMAIN + "/api/check-tokens",{
-    //                 withCredentials:true
-    //             })
-    //         } catch (e) {
-    //             console.error(e);
-    //             router.push("/login")
-    //         }
-    //     })();
+        (async function () {
+            try {
+                await axios.get(process.env.NEXT_PUBLIC_SERVER_DOMAIN + "/api/check-tokens",{
+                    withCredentials:true
+                })
+            } catch (e) {
+                console.error(e);
+                router.push("/login")
+            }
+        })();
 
-    // }, [])
+    }, [])
 
     useEffect(() => {
         const newSchema = generateFormSchema(visibleFields);
