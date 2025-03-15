@@ -21,6 +21,8 @@ import { generateFormSchema } from "@/lib/generate-form-schema";
 import { FormSchema } from "@/types/form-schema";
 import { useEffect, useState } from "react";
 import { DynamicList } from "@/components/ui/dynamic-list";
+import Loader from "@/components/ui/loader"
+import generateDataGridSchema from "@/lib/generate-data-grid-schema";
 // import AxiosClient from '@/app/axiosClass';
 import toast from "react-hot-toast";
 import axios from "axios";
@@ -33,18 +35,19 @@ interface FormProps {
 export function SampleForm({ formData }: FormProps) {
     const router = useRouter();
     const [formSchema, setFormSchema] = useState(generateFormSchema(formData.formFields));
+    const [loader, setLoader] = useState(false);
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         mode: "onTouched",
         defaultValues: formData.formFields.reduce((acc, field) => {
-            acc[field.fieldId] = field.fieldType === "Multiple choice" ? [] : "";
+            if (field.fieldType !== "Sub Heading")
+                acc[field.fieldId] = field.fieldType === "Multiple choice" ? [] : "";
             return acc;
         }, {} as Record<string, "" | never[]>),
     });
 
-    const {
-        control,
+    const { control,
         handleSubmit,
         formState: { errors },
         watch,
@@ -80,8 +83,8 @@ export function SampleForm({ formData }: FormProps) {
 
         (async function () {
             try {
-                await axios.get(process.env.NEXT_PUBLIC_SERVER_DOMAIN + "/api/check-tokens",{
-                    withCredentials:true
+                await axios.get(process.env.NEXT_PUBLIC_SERVER_DOMAIN + "/api/check-tokens", {
+                    withCredentials: true
                 })
             } catch (e) {
                 console.error(e);
@@ -89,7 +92,7 @@ export function SampleForm({ formData }: FormProps) {
             }
         })();
 
-    }, [])
+    }, [router])
 
     useEffect(() => {
         const newSchema = generateFormSchema(visibleFields);
@@ -97,25 +100,33 @@ export function SampleForm({ formData }: FormProps) {
     }, [visibleFields]);
 
     async function onSubmit(data: z.infer<typeof formSchema>) {
-        console.log(data);
+        if (!loader) {
+            console.log(data);
 
-        const DataToSend: any = [];
-        const fileIndexes = Object.keys(data);
-        fileIndexes.forEach((response) => {
-            DataToSend.push({ field_id: response, response: data[response] })
-        })
-        toast.success('Respose submitted');
-        router.push("/submitted");
+            const DataToSend: any = [];
+            const fileIndexes = Object.keys(data);
+            fileIndexes.forEach((response) => {
+                DataToSend.push({ field_id: response, response: data[response] })
+            })
 
-        console.log(DataToSend);
-        // const axiosClient = new AxiosClient(process.env.NEXT_PUBLIC_SERVER_DOMAIN, '/api/v1/refresh-token', '/login');
+            // router.push("/submitted");
 
-        // try {
-        //     await axiosClient.post('/api/v1/forms/upskill2025/responses',data);
-        // } catch (err) {
-        //     console.log(err)
-        // }
+            console.log(DataToSend);
 
+            try {
+                setLoader(true);
+                await axios.post(process.env.NEXT_PUBLIC_SERVER_DOMAIN + "/api/v1/forms/upskill2025/responses", { formId: "upkill2025", responses: DataToSend }, {
+                    withCredentials: true
+                })
+                // const axiosClient = new AxiosClient(process.env.NEXT_PUBLIC_SERVER_DOMAIN, '/api/v1/refresh-token', '/login');
+                router.push("/submitted");
+                toast.success('Respose submitted');
+            } catch (err) {
+                setLoader(false);
+                console.log(err)
+                toast.error('Respose failed');
+            }
+        }
     }
 
     return (
@@ -127,12 +138,12 @@ export function SampleForm({ formData }: FormProps) {
                 {visibleFields.map((field) => {
 
                     if (field.fieldType === "Dynamic List") {
-                        if (!field.dynamicList) return null;
+                        if (!field.dataGrid) return null;
                         return (
                             <div key={field.fieldId}>
                                 <FormLabel>{field.label} {field.required && <span className="text-destructive"> *</span>}</FormLabel>
                                 <FormDescription>{field.description}</FormDescription>
-                                <DynamicList key={field.fieldId} columns={field.dynamicList} initialRows={[]} />
+                                <DynamicList fieldName={field.fieldId} key={field.fieldId} control={control} columns={generateDataGridSchema(field.dataGrid)} initialRows={[]} />
                             </div>
                         );
                     }
@@ -341,7 +352,7 @@ export function SampleForm({ formData }: FormProps) {
 
                 <div className="flex justify-end">
                     <Button type="submit" className="w-auto">
-                        Submit
+                        {loader ? <Loader /> : "Submit"}
                     </Button>
                 </div>
             </form>

@@ -62,13 +62,12 @@ export const generateFormSchema = (formFields: FormField[]) => {
                         return file.size <= (field.maxFileSize || 5) * 1024 * 1024;
                     }, `Invalid file type or size for ${field.label}`);
                     break;
-                // case "Dynamic List":
-                //     schema = z.any().refine((file) => {
-                //         if (!file) return false;
-                //         if (!field.fileTypes?.includes(file?.name.split(".").pop())) return false;
-                //         return file.size <= (field.maxFileSize || 5) * 1024 * 1024;
-                //     }, `Invalid file type or size for ${field.label}`);
-                    // break;
+                case "Dynamic List":
+                    schema = z.any()
+                    break;
+
+                case "Sub Heading":
+                    return acc;
 
                 default:
                     schema = z.string().optional();

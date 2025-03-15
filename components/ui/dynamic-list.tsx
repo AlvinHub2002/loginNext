@@ -31,15 +31,23 @@ import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 import { Button } from "@/components/ui/button";
+import { Control, FieldValues, useFieldArray } from 'react-hook-form'
 
 interface DynamicListProps {
   columns: GridColDef[];
   initialRows?: GridRowsProp;
+  control: Control<FieldValues>;
+  fieldName: string
 }
 
-export function DynamicList({ columns, initialRows = [] }: DynamicListProps) {
+export function DynamicList({ columns, initialRows = [], control, fieldName }: DynamicListProps) {
   const [rows, setRows] = React.useState(initialRows);
   const [rowModesModel, setRowModesModel] = React.useState<GridRowModesModel>({});
+  const { fields, append, update, remove } = useFieldArray({
+    control, // control props comes from useForm (optional: if you are using FormProvider)
+    name: fieldName, // unique name for your Field Array
+  });
+
 
   const handleRowEditStop: GridEventListener<"rowEditStop"> = (params, event) => {
     if (params.reason === GridRowEditStopReasons.rowFocusOut) {
@@ -62,6 +70,7 @@ export function DynamicList({ columns, initialRows = [] }: DynamicListProps) {
   };
 
   const handleDeleteClick = (id: GridRowId) => () => {
+    console.log(id)
     setDeleteRecordId(id);
   };
 
@@ -70,6 +79,8 @@ export function DynamicList({ columns, initialRows = [] }: DynamicListProps) {
       return;
     }
     setRows(rows.filter((row) => row.id !== deleteRecordId));
+    console.log(deleteRecordId)
+    remove(Number(deleteRecordId))
     toast.success("Record deleted successfully", { position: "top-right" });
     setDeleteRecordId(null);
   };
@@ -85,8 +96,10 @@ export function DynamicList({ columns, initialRows = [] }: DynamicListProps) {
     });
 
     const editedRow = rows.find((row) => row.id === id);
+    remove(Number(id))
     if (editedRow!.isNew) {
       setRows(rows.filter((row) => row.id !== id));
+
     }
   };
 
@@ -99,6 +112,20 @@ export function DynamicList({ columns, initialRows = [] }: DynamicListProps) {
 
     const updatedRow = { ...newRow, isNew: false };
     setRows(rows.map((row) => (row.id === newRow.id ? updatedRow : row)));
+
+
+    const filteredObj = Object.keys(newRow)
+      .filter(key => key !== 'id' && key !== 'isNew')  // Filter out the keys you don't want
+      .reduce((acc: any, key) => {
+        if (typeof newRow[key] === 'object')
+          acc[key] = newRow[key].toISOString();
+        else
+          acc[key] = newRow[key];  // Build a new object with the filtered keys
+        return acc;
+      }, {});
+    console.log(filteredObj);
+    update(newRow.id, filteredObj)
+
     toast.success("Record updated successfully", { position: "top-right" });
     return updatedRow;
   };
@@ -252,7 +279,7 @@ export function DynamicList({ columns, initialRows = [] }: DynamicListProps) {
           // @ts-ignore
           slots={{ noRowsOverlay: AddRowButton, footer: AddRowButton }}
           // @ts-ignore
-          slotProps={{ noRowsOverlay: { columns, setRows, setRowModesModel, isNew: true }, footer: { columns, setRows, setRowModesModel } }}
+          slotProps={{ noRowsOverlay: { columns, setRows, setRowModesModel, append, fields, isNew: true }, footer: { columns, setRows, setRowModesModel, append, fields } }}
           sx={{
             // border: 0,
             // "& .MuiDataGrid-main": {
@@ -290,12 +317,15 @@ interface AddRowButtonProps {
   setRows: (newRows: (oldRows: GridRowsProp) => GridRowsProp) => void;
   setRowModesModel: (newModel: (oldModel: GridRowModesModel) => GridRowModesModel) => void;
   columns: GridColDef[];
+  append: any
+  fields: any,
   isNew?: boolean;
 }
 
-function AddRowButton({ columns, setRows, setRowModesModel, isNew = false }: AddRowButtonProps) {
+function AddRowButton({ columns, setRows, setRowModesModel, append, fields, isNew = false }: AddRowButtonProps) {
   const generateNewRow = () => {
-    const id = `${Math.floor(Math.random() * 100000)}`;
+    // const currentLength = ;
+    const id = fields.length;
 
     const defaultValues: Record<string, any> = {
       string: "",
@@ -317,6 +347,16 @@ function AddRowButton({ columns, setRows, setRowModesModel, isNew = false }: Add
 
   const handleClick = () => {
     const newRow = generateNewRow();
+    const filteredObj = Object.keys(newRow)
+      .filter(key => key !== 'id' && key !== 'isNew')  // Filter out the keys you don't want
+      .reduce((acc: any, key) => {
+        if (typeof newRow[key] === 'object')
+          acc[key] = newRow[key].toISOString();
+        else
+          acc[key] = newRow[key];  // Build a new object with the filtered keys
+        return acc;
+      }, {});
+    append(filteredObj);
     setRows((oldRows) => [...oldRows, { ...newRow, isNew: true }]);
     setRowModesModel((oldModel) => ({
       ...oldModel,

@@ -1,4 +1,4 @@
-import { GridColDef } from "@mui/x-data-grid";
+// import { GridColDef } from "@mui/x-data-grid";
 
 export interface FormSchema {
   formId: string;
@@ -23,7 +23,7 @@ export interface FormField {
   | "Dynamic List"
   | "Sub Heading";
   label: string;
-  description: string;
+  description?: string;
   placeholder?: string;
   required: boolean;
   minWords?: number;
@@ -32,11 +32,12 @@ export interface FormField {
   fileTypes?: string[];
   maxFileSize?: number;
   conditionalLogic?: ConditionalLogic;
-  dynamicList?: GridColDef[];
+  dataGrid?: DataGridColumn[];
+  // DataGrid?: GridColDef[];
 }
 
-export interface DynamicListColumn {
-  columnId: string;
+export interface DataGridColumn {
+  fieldId: string;
   fieldType:
   | "Short Input Fields"
   | "IEEE Member ID"
@@ -49,9 +50,12 @@ export interface DynamicListColumn {
   | "Date Picker"
   | "Time picker";
   label: string;
+  description?: string;
   placeholder?: string;
   required: boolean;
   options?: string[];
+  minWords?: number;
+  maxWords?: number;
 }
 
 export interface ConditionalLogic {

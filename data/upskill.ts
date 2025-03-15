@@ -178,7 +178,7 @@ export const sampleFormData: FormSchema = {
             ]
         },
         {
-            "fieldId": "field_009",
+            "fieldId": "field_009_1",
             "fieldType": "Short Input Fields",
             "label": "YP Chair Name (Section/ Council)",
             "description": "",
@@ -242,7 +242,7 @@ export const sampleFormData: FormSchema = {
         {
             "fieldId": "field_015",
             "fieldType": "Text area",
-            "label": "Explain how the project addresses your Affinity Group’s or Council’s needs and its importance for your Section/Council (200 words maximum):",
+            "label": "Explain how the project addresses your Affinity Group's or Council's needs and its importance for your Section/Council (200 words maximum):",
             "description": "",
             "placeholder": "string",
             "required": true,
@@ -313,63 +313,70 @@ export const sampleFormData: FormSchema = {
             "label": "Tracks",
             "description": "Please provide the following details in each row.",
             "required": true,
-            "dynamicList": [
+            "dataGrid": [
                 {
-                    "field": "name",
-                    "headerName": "Track Categories",
-                    "editable": true,
-                    "flex": 1,
-                    "minWidth": 150,
-                    "type": "singleSelect",
-                    "valueOptions": [
-                        { "label": "Talks/Keynotes", value: "Talks/Keynotes" },
-                        { "label": "Workshops/Hands-on Demonstrations", value: "Workshops/Hands-on Demonstrations" },
-                        { "label": "Networking Sessions", value: "Networking Sessions" },
-                        { "label": "Mentoring Session", value: "Mentoring Session" },
-                        { "label": "Panel Discussions", value: "Panel Discussions" },
-                        { "label": "Other Programs", value: "Other Programs" },
+                    "fieldId": "field_021",
+                    "fieldType": "Dropdown",
+                    "label": "Track Categories",
+                    "description": "",
+                    "required": true,
+                    "options": [
+                        "Talks/Keynotes",
+                        "Workshops/Hands-on Demonstrations",
+                        "Networking Sessions",
+                        "Mentoring Session",
+                        "Panel Discussions",
+                        "Other Programs",
                     ]
                 },
                 {
-                    "field": "title",
-                    "headerName": "Title",
-                    "editable": true,
-                    "flex": 1,
-                    "minWidth": 150
+                    "fieldId": "field_022",
+                    "fieldType": "Short Input Fields",
+                    "label": "Title",
+                    "description": "",
+                    "placeholder": "",
+                    "required": true,
+                    "minWords": 0,
                 },
                 {
-                    "field": "objective",
-                    "headerName": "Objective",
-                    "editable": true,
-                    "flex": 1,
-                    "minWidth": 150
+                    "fieldId": "field_023",
+                    "fieldType": "Short Input Fields",
+                    "label": "Objective",
+                    "description": "",
+                    "placeholder": "",
+                    "required": true,
+                    "minWords": 0,
                 },
                 {
-                    "field": "speakers",
-                    "headerName": "Speakers",
-                    "editable": true,
-                    "flex": 1,
-                    "minWidth": 150
+                    "fieldId": "field_024",
+                    "fieldType": "Short Input Fields",
+                    "label": "Speakers",
+                    "description": "",
+                    "placeholder": "",
+                    "required": true,
+                    "minWords": 0,
                 },
                 {
-                    "field": "collaborator",
-                    "headerName": "Collaborator",
-                    "editable": true,
-                    "flex": 1,
-                    "minWidth": 150
+                    "fieldId": "field_025",
+                    "fieldType": "Short Input Fields",
+                    "label": "Collaborator",
+                    "description": "",
+                    "placeholder": "",
+                    "required": true,
+                    "minWords": 0,
                 },
                 {
-                    "field": "joinDate",
-                    "headerName": "Event Date",
-                    "type": "date",
-                    "editable": true,
-                    "flex": 1,
-                    "minWidth": 150
-                }
+                    "fieldId": "field_026",
+                    "fieldType": "Time picker",
+                    "label": "Event Date",
+                    "description": "When should we contact you?",
+                    "placeholder": "HH:MM",
+                    "required": true,
+                },
             ]
         },
         {
-            "fieldId": "field_022",
+            "fieldId": "field_027",
             "fieldType": "Short Input Fields",
             "label": "Metrics to measure its success",
             "description": "Number of YP members, participants, and collaborators",
@@ -378,7 +385,7 @@ export const sampleFormData: FormSchema = {
             "minWords": 0
         },
         {
-            "fieldId": "field_023",
+            "fieldId": "field_028",
             "fieldType": "Text area",
             "label": "Impact",
             "description": "A description of how the planned activity can benefit the professional development of YP members",
@@ -387,31 +394,34 @@ export const sampleFormData: FormSchema = {
             "minWords": 0
         },
         {
-            "fieldId": "field_024",
+            "fieldId": "field_029",
             "fieldType": "Dynamic List",
             "label": "Expected Income",
             "description": "",
             "required": true,
-            "dynamicList": [
-
+            "dataGrid": [
                 {
-                    "field": "IncomeSource",
-                    "headerName": "Income Source Name",
-                    "editable": true,
-                    "flex": 1,
-                    "minWidth": 150
+                    "fieldId": "field_030",
+                    "fieldType": "Short Input Fields",
+                    "label": "Income Source Name",
+                    "description": "",
+                    "placeholder": "",
+                    "required": true,
+                    "minWords": 0,
                 },
                 {
-                    "field": "SourceIncome",
-                    "headerName": "Source Income",
-                    "editable": true,
-                    "flex": 1,
-                    "minWidth": 150
+                    "fieldId": "field_031",
+                    "fieldType": "Short Input Fields",
+                    "label": "Source Income",
+                    "description": "",
+                    "placeholder": "",
+                    "required": true,
+                    "minWords": 0,
                 }
             ]
         },
         {
-            "fieldId": "field_025",
+            "fieldId": "field_032",
             "fieldType": "Short Input Fields",
             "label": "Total Expected Income (USD)",
             "description": "",
@@ -420,42 +430,49 @@ export const sampleFormData: FormSchema = {
             "minWords": 0
         },
         {
-            "fieldId": "field_026",
+            "fieldId": "field_033",
             "fieldType": "Dynamic List",
-            "label": "Expected Income",
+            "label": "Expected Expenses",
             "description": "",
             "required": true,
-            "dynamicList": [
-
+            "dataGrid": [
                 {
-                    "field": "ItemName/Description",
-                    "headerName": "Item Name/Description",
-                    "editable": true,
-                    "flex": 1,
-                    "minWidth": 150
+                    "fieldId": "field_034",
+                    "fieldType": "Short Input Fields",
+                    "label": "Item Name/Description",
+                    "description": "",
+                    "placeholder": "",
+                    "required": true,
+                    "minWords": 0,
                 },
                 {
-                    "field": "Quantity",
-                    "headerName": "Quantity",
-                    "editable": true,
-                    "flex": 1,
-                    "minWidth": 150
+                    "fieldId": "field_035",
+                    "fieldType": "Short Input Fields",
+                    "label": "Quantity",
+                    "description": "",
+                    "placeholder": "",
+                    "required": true,
+                    "minWords": 0,
                 },
                 {
-                    "field": "UnitPrice",
-                    "headerName": "Unit Price",
-                    "editable": true,
-                    "flex": 1,
-                    "minWidth": 150
+                    "fieldId": "field_036",
+                    "fieldType": "Short Input Fields",
+                    "label": "Unit Price",
+                    "description": "",
+                    "placeholder": "",
+                    "required": true,
+                    "minWords": 0,
                 },
                 {
-                    "field": "TotalPrice",
-                    "headerName": "Total Price",
-                    "editable": true,
-                    "flex": 1,
-                    "minWidth": 150
+                    "fieldId": "field_037",
+                    "fieldType": "Short Input Fields",
+                    "label": "Total Price",
+                    "description": "",
+                    "placeholder": "",
+                    "required": true,
+                    "minWords": 0,
                 }
             ]
-        },
+        }
     ]
 }
