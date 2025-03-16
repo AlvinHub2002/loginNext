@@ -4,11 +4,12 @@ import Head from 'next/head'
 
 export default function Home() {
   return (
-    <div className="min-h-screen flex justify-center my-8">
+    <div className="min-h-screen flex justify-center py-8 bg-gradient-to-r from-slate-50 to-slate-200">
       <Head>
         <title>Upskill 2025</title>
       </Head>
-      <SampleForm formData={sampleFormData} />
+        <SampleForm formData={sampleFormData} />
+
     </div>
   );
 }

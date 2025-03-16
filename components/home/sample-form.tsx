@@ -130,8 +130,8 @@ export function SampleForm({ formData }: FormProps) {
     }
 
     return (
-        <Form {...form}>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-5 p-10 w-full max-w-4xl mx-auto">
+        <Form  {...form} >
+            <form onSubmit={handleSubmit(onSubmit)}  className="space-y-5 p-10 w-full max-w-4xl mx-auto bg-white">
                 <h2 className="text-2xl font-bold mb-6 text-center">{formData.formTitle}</h2>
                 <p className="text-center mb-4 text-gray-600">{formData.description}</p>
 

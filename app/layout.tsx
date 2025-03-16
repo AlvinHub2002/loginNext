@@ -16,6 +16,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "GEMS FORM",
   description: "GEMS Form Builder Application",
+  icons: {
+    icon: '/favicon.ico', // /public path
+  },
 };
 
 export default function RootLayout({
@@ -30,6 +33,10 @@ export default function RootLayout({
       >
         {children}
         <Toaster />
+        <footer>
+          <center>
+          <p className="p-4 text-slate-600 text-sm"> Made by GEMS Team, IEEE Region 10 Young Professionals.</p> </center>
+        </footer>
       </body>
     </html>
   );
