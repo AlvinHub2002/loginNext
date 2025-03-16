@@ -25,7 +25,7 @@ import Loader from "@/components/ui/loader"
 import generateDataGridSchema from "@/lib/generate-data-grid-schema";
 // import AxiosClient from '@/app/axiosClass';
 import toast from "react-hot-toast";
-import axios from "axios";
+import axios from "@/lib/axios";
 
 
 interface FormProps {
@@ -83,7 +83,7 @@ export function SampleForm({ formData }: FormProps) {
 
         (async function () {
             try {
-                await axios.get(process.env.NEXT_PUBLIC_SERVER_DOMAIN + "/api/check-tokens", {
+                await axios.get("/api/check-tokens", {
                     withCredentials: true
                 })
             } catch (e) {
@@ -115,7 +115,7 @@ export function SampleForm({ formData }: FormProps) {
 
             try {
                 setLoader(true);
-                await axios.post(process.env.NEXT_PUBLIC_SERVER_DOMAIN + "/api/v1/forms/upskill2025/responses", { formId: "upkill2025", responses: DataToSend }, {
+                await axios.post("/api/v1/forms/upskill2025/responses", { formId: "upkill2025", responses: DataToSend }, {
                     withCredentials: true
                 })
                 // const axiosClient = new AxiosClient(process.env.NEXT_PUBLIC_SERVER_DOMAIN, '/api/v1/refresh-token', '/login');
