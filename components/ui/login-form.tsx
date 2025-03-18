@@ -5,7 +5,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import { useRouter } from 'next/navigation'
-
+import axios from "axios";
+import toast from "react-hot-toast";
 export function LoginForm({
   className,
   ...props
@@ -13,7 +14,7 @@ export function LoginForm({
   // Form state
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
@@ -22,35 +23,26 @@ export function LoginForm({
     event.preventDefault();
 
     setLoading(true);
-    setError(null);
+    // setError(null);
 
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_SERVER_DOMAIN + '/api/v1/login', {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          emailId:email,
-          password,
-        }),
+      await axios.post(process.env.NEXT_PUBLIC_SERVER_DOMAIN + '/api/v1/login', {
+        "emailId": email,
+        password,
       });
 
-      if (!response.ok) {
-        throw new Error('Invalid credentials or login failed');
-      }
+
+      setSuccess(true);
       router.push("/form/upskill2025");
-      await response.json();
       // Assuming the response contains a token or some other data after successful login
       // You could store the token or redirect the user here
-      setSuccess(true);
       // Optionally store the token or user data, e.g., in localStorage, or set some state
       // localStorage.setItem('token', data.token);
       // You might want to redirect the user to a protected page
       // For example: router.push("/dashboard");
-    } catch (error:any) {
-      setError(error.message || 'An error occurred');
+    } catch (error: any) {
+      toast.error(error.response.data.message || error.message || 'An error occurred', { position: "bottom-right" })
+      // setError(error.message || 'An error occurred');
     } finally {
       setLoading(false);
     }
@@ -108,7 +100,7 @@ export function LoginForm({
         </Button>
       </div>
 
-      {error && <div className="text-red-500 text-center">{error}</div>}
+      {/* {error && <div className="text-red-500 text-center">{error}</div>} */}
       {success && <div className="text-green-500 text-center">Login successful!</div>}
 
       {/* Sign Up Link */}

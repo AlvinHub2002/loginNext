@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import axios from "axios";
 import { useRouter } from 'next/navigation'
 
 export function SignupForm({
@@ -18,7 +19,7 @@ export function SignupForm({
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  // const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
@@ -29,33 +30,23 @@ export function SignupForm({
 
     // Basic validation
     if (password !== confirmPassword) {
-      setError('Passwords do not match');
+      // setError('Passwords do not match');
       toast.error("Password doesn't match", { position: "bottom-right" })
       return;
     }
 
     setLoading(true);
-    setError(null);
+    // setError(null);
 
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_SERVER_DOMAIN + '/api/v1/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
+      await axios.post(process.env.NEXT_PUBLIC_SERVER_DOMAIN + '/api/v1/users',
+        {
           "email": email,
           "password": password,
-          "first_name": "Abhijith",
-          "last_name": "Kannan"
-        })
-
-
-      });
+          "first_name": firstName,
+          "last_name": lastName
+        });
       router.push("/login");
-      if (!response.ok) {
-        throw new Error('Failed to create account');
-      }
 
       setSuccess(true);
       setFirstName('');
@@ -63,8 +54,8 @@ export function SignupForm({
       setPassword('');
       setConfirmPassword('');
     } catch (error: any) {
-      setError(error.message || 'An error occurred');
-      console.log("Erroro ")
+      toast.error(error.response.data.message || error.message || 'An error occurred', { position: "bottom-right" })
+      // setError(error.message || 'An error occurred');
       console.log(error)
     } finally {
       setLoading(false);
@@ -149,7 +140,7 @@ export function SignupForm({
         </Button>
       </div>
 
-      {error && <div className="text-red-500 text-center">{error}</div>}
+      {/* {error && <div className="text-red-500 text-center">{error}</div>} */}
       {success && <div className="text-green-500 text-center">Account created successfully!</div>}
 
       {/* Login Link */}
