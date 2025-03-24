@@ -300,12 +300,7 @@ export const sampleFormData: FormSchema = {
             "description": "",
             "placeholder": "",
             "required": true,
-            "minWords": 0,
-            "conditionalLogic": {
-                "fieldId": "field_008",
-                "value": "Other",
-                "operator": "equals"
-            }
+            "minWords": 0
         },
         {
             "fieldId": "field_020",

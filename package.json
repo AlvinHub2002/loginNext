@@ -43,6 +43,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@hookform/devtools": "^4.3.3",
     "@types/node": "^20",
     "@types/qs": "^6.9.18",
     "@types/react": "^19",

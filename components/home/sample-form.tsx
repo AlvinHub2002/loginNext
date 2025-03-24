@@ -59,6 +59,7 @@ export function SampleForm({ formData }: FormProps) {
         .map((field) => watch(field.conditionalLogic?.fieldId || ""));
 
     const visibleFields = useMemo(() => {
+        console.log(errors);
         return formData.formFields.filter((field) => {
             if (!field.conditionalLogic) return true;
 
@@ -97,6 +98,7 @@ export function SampleForm({ formData }: FormProps) {
     useEffect(() => {
         const newSchema = generateFormSchema(visibleFields);
         setFormSchema(newSchema);
+       
     }, [visibleFields]);
 
     async function onSubmit(data: z.infer<typeof formSchema>) {
