@@ -13,6 +13,7 @@ import Loader from "@/components/ui/loader"
 import toast from "react-hot-toast";
 import axios from "@/lib/axios";
 import FormElementsHandler from "./FormInputField";
+// import { zodToJsonSchema } from "zod-to-json-schema";
 // import { DevTool } from "@hookform/devtools";
 interface FormProps {
     formData: FormSchema;
@@ -29,7 +30,7 @@ export function FormsCreator({ formData }: FormProps) {
                 acc[field.fieldId] = field.fieldType === "Multiple choice" || field.fieldType === "Dynamic List" ? [] : "";
             return acc;
         }, {} as Record<string, "" | never[]>)
-        console.log(res)
+        // console.log(res)
         return res;
     }
 
@@ -60,10 +61,9 @@ export function FormsCreator({ formData }: FormProps) {
 
     // Output the schema description
 
-
     useEffect(() => {
         const newSchema = generateFormSchema(formData.formFields);
-        console.log(newSchema)
+        // console.log(newSchema)
         setFormSchema(newSchema);
     }, [formData.formFields]);
 
@@ -89,6 +89,7 @@ export function FormsCreator({ formData }: FormProps) {
             }
         }
     }
+    // console.log(form.formState.defaultValues);
     console.log(form.formState.errors);
     return (<>
 

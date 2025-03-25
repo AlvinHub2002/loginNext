@@ -241,8 +241,8 @@ export const sampleFormData: FormSchema = {
             "description": "",
             "placeholder": "",
             "required": true,
-            "minWords": 5,
-            "maxWords": 200,
+            // "minWords": 5,
+            // "maxWords": 200,
             "conditionalLogic": {
                 "fieldId": "field_020",
                 "value": "Other",

@@ -212,31 +212,31 @@ export function FormTimePickerField({ field, form }: FormInputFieldProps) {
 }
 
 export default function FormElementsHandler({ form, field }: FormInputFieldProps) {
-    const [show, setShow] = useState(true);
-    // const { watch } = form;
-    // // Memoize the getConditionalLogicDependencies function
-    // const memoizedGetConditionalLogicDependencies = useCallback((fieldLogic: any, fieldValue: any)  => {
-    //     return getConditionalLogicDependencies(fieldLogic, fieldValue);
-    // }, []);
+    const [show, setShow] = useState(false);
+    const { watch } = form;
+    // Memoize the getConditionalLogicDependencies function
+    const memoizedGetConditionalLogicDependencies = useCallback((fieldLogic: any, fieldValue: any) => {
+        return getConditionalLogicDependencies(fieldLogic, fieldValue);
+    }, []);
 
-    // useEffect(() => {
-    //     if (field.conditionalLogic) {
-    //         // Watch the field defined by conditionalLogic.fieldId
-    //         const watchFieldId = field.conditionalLogic.fieldId;
+    useEffect(() => {
+        if (field.conditionalLogic) {
+            // Watch the field defined by conditionalLogic.fieldId
+            const watchFieldId = field.conditionalLogic.fieldId;
 
-    //         const subscription = watch((value: any) => {
-    //             // Handling conditional logic here
-    //             // const fieldValue = value[watchFieldId];
-    //             // setShow(memoizedGetConditionalLogicDependencies(field.conditionalLogic, fieldValue));
-    //         });
+            const subscription = watch((value: any) => {
+                // Handling conditional logic here
+                const fieldValue = value[watchFieldId];
+                setShow(memoizedGetConditionalLogicDependencies(field.conditionalLogic, fieldValue));
+            });
 
-    //         // Cleanup function (if needed) - no explicit unsubscribe is required for `watch`
-    //         return () => subscription.unsubscribe();
-    //     } else {
-    //         // If no conditionalLogic, set show to true directly
-    //         // setShow(true);
-    //     }
-    // }, [field.conditionalLogic, watch,memoizedGetConditionalLogicDependencies]);
+            // Cleanup function (if needed) - no explicit unsubscribe is required for `watch`
+            return () => subscription.unsubscribe();
+        } else {
+            // If no conditionalLogic, set show to true directly
+            setShow(true);
+        }
+    }, [field.conditionalLogic, watch, memoizedGetConditionalLogicDependencies]);
 
     return show ? (
         <>

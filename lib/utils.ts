@@ -28,10 +28,13 @@ export function getConditionalLogicDependencies(conditionalLogic: any, dependenc
     }
   };
   // If the value is an array, handle accordingly
-  if (dependencyValue.length) {
+
+
+  if (Array.isArray(dependencyValue)) {
 
     const isInArray = dependencyValue.includes(value); // Check if "Matilda" exists in the array
-
+    console.log(dependencyValue)
+    console.log(Array.isArray(dependencyValue.includes(value)))
     switch (operator) {
       case "equals":
         return isInArray; // true if "Matilda" is in the array

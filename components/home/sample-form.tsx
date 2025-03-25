@@ -26,6 +26,7 @@ import generateDataGridSchema from "@/lib/generate-data-grid-schema";
 // import AxiosClient from '@/app/axiosClass';
 import toast from "react-hot-toast";
 import axios from "@/lib/axios";
+import { zodToJsonSchema } from "zod-to-json-schema";
 
 
 interface FormProps {
@@ -59,7 +60,7 @@ export function SampleForm({ formData }: FormProps) {
         .map((field) => watch(field.conditionalLogic?.fieldId || ""));
 
     const visibleFields = useMemo(() => {
-        console.log(errors);
+  
         return formData.formFields.filter((field) => {
             if (!field.conditionalLogic) return true;
 
@@ -79,6 +80,10 @@ export function SampleForm({ formData }: FormProps) {
     }, watchFieldsArray);
 
     // const
+    useEffect(() => {
+        const jsonSchema = zodToJsonSchema(formSchema, "mySchema");
+        console.log(jsonSchema)
+    }, [formSchema]);
 
     useEffect(() => {
 
