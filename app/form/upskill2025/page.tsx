@@ -1,5 +1,5 @@
 
-import { SampleForm } from "@/components/home/sample-form";
+// import { SampleForm } from "@/components/home/sample-form";
 import { sampleFormData } from "@/data/upskill";
 import { FormsCreator } from "@/components/home/FormsCreator";
 
