@@ -53,15 +53,17 @@ export const sampleFormData: FormSchema = {
             "description": "",
             "required": true,
             "options": [
-                "Shandong", "Chandigarh", "Guntur", "Peshawar", "Kochi", "Malabar", "Podhigai",
-                "Hefei", "Zhejiang", "Honam", "Sri Lanka Central", "Roorkee", "Tasmania",
-                "Brunei Darussalam", "Mangalore", "Nepal (elevated to Section in 2024)",
-                "Rajasthan", "Bhubaneswar", "Fiji", "Afghanistan Subsection", "Anathapuramu Subsection",
-                "Bahawalpur Subsection", "Sarawak Subsection", "Nagpur", "Cambodia", "Myanmar",
-                "Sabah", "Bhutan", "Mongolia", "Patna", "Northern Territory", "Chongqing", "Faisalabad",
-                "Quetta Subsection", "Laos Subsection", "North Karnataka", "Rourkela Subsection",
-                "Mysore Subsection", "Kuala Lumpur Subsection", "Silchar Subsection", "Guwahati Subsection",
-                "Sukkur Subsection", "Maldives Subsection"
+                "Brunei Darussalam",
+                "Nepal",
+                "Fiji",
+                "Afghanistan Subsection",
+                "Cambodia",
+                "Myanmar",
+                "Sabah",
+                "Bhutan",
+                "Mongolia",
+                "Laos Subsection",
+                "Maldives Subsection"
             ],
             "conditionalLogic": {
                 "fieldId": "field_005",
