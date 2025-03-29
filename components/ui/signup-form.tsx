@@ -46,8 +46,10 @@ export function SignupForm({
           "first_name": firstName,
           "last_name": lastName
         });
-      router.push("/login");
-
+      toast.success('Email verification required. Please check your inbox.');
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
       setSuccess(true);
       setFirstName('');
       setEmail('');
