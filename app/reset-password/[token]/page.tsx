@@ -5,8 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { toast } from 'sonner'
 import { GalleryVerticalEnd } from "lucide-react"
-
-
+import axios from 'axios'
+import { useState } from 'react'
 import {
   Form,
   FormControl,
@@ -23,8 +23,8 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { PasswordInput } from '@/components/ui/password-input'
+import { useRouter, useParams } from 'next/navigation';
 
 // Schema for password validation
 const formSchema = z
@@ -41,6 +41,11 @@ const formSchema = z
   })
 
 export default function ResetPasswordPreview() {
+
+  const router = useRouter();
+  const params = useParams();
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -50,15 +55,29 @@ export default function ResetPasswordPreview() {
   })
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      // Assuming an async reset password function
-      console.log(values)
-      toast.success(
-        'Password reset successful. You can now log in with your new password.',
-      )
-    } catch (error) {
-      console.error('Error resetting password', error)
-      toast.error('Failed to reset the password. Please try again.')
+    const token = params.token;
+    if (token) {
+      setLoading(true);
+      try {
+        // Assuming an async reset password function
+        console.log(values)
+        await axios.put(process.env.NEXT_PUBLIC_SERVER_DOMAIN + `/api/v1/update-password`, {
+          token: token,
+          newPassword: values.confirmPassword
+        });
+        toast.success(
+          'Password reset successful. You can now log in with your new password.',
+        )
+        // Redirect to the login page after 10 seconds
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000); // 10000ms = 10 seconds
+      } catch (error: any) {
+        console.log('Error resetting password', error)
+        toast.error(error.response.data.message || error.message || 'Failed to reset the password. Please try again.')
+      } finally {
+        setLoading(false);
+      }
     }
   }
 
@@ -130,8 +149,8 @@ export default function ResetPasswordPreview() {
                         )}
                       />
 
-                      <Button type="submit" className="w-full">
-                        Reset Password
+                      <Button type="submit" className="w-full" disabled={loading}>
+                        {loading ? "verifying..." : "Submit"}
                       </Button>
                     </div>
                   </form>

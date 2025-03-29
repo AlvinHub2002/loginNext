@@ -29,11 +29,18 @@ export function LoginForm({
       await axios.post(process.env.NEXT_PUBLIC_SERVER_DOMAIN + '/api/v1/login', {
         "emailId": email,
         password,
+      }, {
+        withCredentials: true
       });
 
 
       setSuccess(true);
-      router.push("/form/upskill2025");
+
+      // Redirect to the login page after 10 seconds
+      setTimeout(() => {
+        router.push("/form/upskill2025");
+      }, 2000); // 10000ms = 10 seconds
+      // router.push("/form/upskill2025");
       // Assuming the response contains a token or some other data after successful login
       // You could store the token or redirect the user here
       // Optionally store the token or user data, e.g., in localStorage, or set some state
@@ -79,7 +86,7 @@ export function LoginForm({
           <div className="flex items-center">
             <Label htmlFor="password">Password</Label>
             <a
-              href="#"
+              href="/forgot-password"
               className="ml-auto text-sm underline-offset-4 hover:underline"
             >
               Forgot your password?
