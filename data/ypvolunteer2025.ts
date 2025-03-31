@@ -451,10 +451,10 @@ export const ypVolunteer2025: FormSchema = {
             "fieldId": "field_027",
             "fieldType": "File upload",
             "label": "Formal picture of the nominee",
-            "description": "Allowed file formats: .pdf, .docx",
+            "description": "Allowed file formats: .png, .jpg, .jpeg, Max size : 1MB",
             "required": true,
-            fileTypes: ["pdf", "docx", "jpeg"],
-            maxFileSize: 1,
+            "fileTypes": ["png", "jpg", "jpeg"],
+            "maxFileSize": 1,
         },
         {
             "fieldId": "field_028",
