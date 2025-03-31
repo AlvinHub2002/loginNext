@@ -297,6 +297,16 @@ export default function FormElementsHandler({ form, field }: FormInputFieldProps
                             </FormElementWrapper >
                         );
 
+                    case "Sub Heading":
+                        return (
+                            <FormItem>
+                                <FormLabel>
+                                    <h1 className="text-lg">{field.label}</h1>
+                                </FormLabel>
+                                {field.description && <FormDescription>{field.description}</FormDescription>}
+                            </FormItem>
+                        );
+
                     default:
                         return null;
                 }

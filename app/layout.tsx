@@ -33,11 +33,17 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
-        <Toaster2/>
+        <Toaster2 />
         <Toaster />
+        {/* <div style={{ position: "fixed",bottom:"60px", right:"20px", backgroundColor:"white",padding:"20px", borderRadius:"20px" }}>
+          Need help ?
+        </div> */}
         <footer>
           <center>
-            <p className="p-4 text-slate-600 text-sm"> Made by GEMS Team, IEEE Region 10 Young Professionals.</p> </center>
+            <p className="p-4 text-slate-600 text-sm">
+              Need help or are you facing any issues? Please write us to abhijithkannan@ieee.org <br />
+              Made by GEMS Team, IEEE Region 10 Young Professionals.</p> </center>
+
         </footer>
       </body>
     </html>

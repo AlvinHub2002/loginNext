@@ -14,7 +14,7 @@ const evaluateCondition = (
     // Evaluate condition based on the operator
     switch (operator) {
         case "equals": {
-            if  (Array.isArray(targetFieldValue)) {
+            if (Array.isArray(targetFieldValue)) {
                 return targetFieldValue.includes(value);
             }
             else
@@ -90,9 +90,13 @@ export const generateFormSchema = (formFields: FormField[]) => {
                 case "File upload":
                     // Validation for file uploads, ensuring correct file type and size
                     schema = z.any().refine((file) => {
-                        if (!file) return false;
-                        if (!field.fileTypes?.includes(file?.name.split(".").pop())) return false;
-                        return file.size <= (field.maxFileSize || 5) * 1024 * 1024; // Check max file size (default 5MB)
+                        if (!file && isRequired) return false;
+                        if (file) {
+                            console.log(field.fileTypes?.includes(file?.name.split(".").pop()))
+                            if (!field.fileTypes?.includes(file?.name.split(".").pop())) return false;
+                            return file.size <= (field.maxFileSize || 5) * 1024 * 1024; // Check max file size (default 5MB)
+                        }
+                        return true
                     }, `Invalid file type or size for ${field.label}`);
                     break;
 
@@ -131,24 +135,24 @@ export const generateFormSchema = (formFields: FormField[]) => {
             }
         });
     })
-    
-    // .transform((data) => {
-    //     // This is where you mutate the data based on conditions
-    //     formFields.forEach((field) => {
-    //         if (field.conditionalLogic) {
-    //             if (evaluateCondition(field, data)) {
-    //                 // If the condition is satisfied, leave the field as is
-    //                 // No need to modify the value
-    //             } else {
-    //                 // Mutate the data, setting the field to empty string or a default value
-    //                 data[field.fieldId] = ""; // Mutate field value if condition fails
-    //             }
-    //         }
-    //     });
-    //     console.log(data)
-    //     return data; // Return the mutated data
-    // })
-    ;
+
+        // .transform((data) => {
+        //     // This is where you mutate the data based on conditions
+        //     formFields.forEach((field) => {
+        //         if (field.conditionalLogic) {
+        //             if (evaluateCondition(field, data)) {
+        //                 // If the condition is satisfied, leave the field as is
+        //                 // No need to modify the value
+        //             } else {
+        //                 // Mutate the data, setting the field to empty string or a default value
+        //                 data[field.fieldId] = ""; // Mutate field value if condition fails
+        //             }
+        //         }
+        //     });
+        //     console.log(data)
+        //     return data; // Return the mutated data
+        // })
+        ;
 };
 
 

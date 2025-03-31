@@ -72,9 +72,11 @@ export function FormsCreator({ formData }: FormProps) {
             const DataToSend: any = [];
             const fileIndexes = Object.keys(data);
             fileIndexes.forEach((response) => {
-                DataToSend.push({ field_id: response, response: data[response] })
+                if (!data[response].name) {
+                    DataToSend.push({ field_id: response, response: data[response] })
+                }
             })
-
+            console.log(DataToSend)
             try {
                 setLoader(true);
                 await axios.post("/api/v1/forms/upskill2025/responses", { formId: "upkill2025", responses: DataToSend }, {
