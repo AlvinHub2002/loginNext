@@ -120,11 +120,18 @@ export function FormMultiChoiceField({ field, form }: FormInputFieldProps) {
 
 export function FormDataGridField({ field, form }: FormInputFieldProps) {
     if (!field.dataGrid) return null;
-    return <div key={field.fieldId}>
-        <FormLabel>{field.label} {field.required && <span className="text-destructive"> *</span>}</FormLabel>
-        <FormDescription>{field.description}</FormDescription>
-        <DynamicList fieldName={field.fieldId} key={field.fieldId} control={form.control} columns={generateDataGridSchema(field.dataGrid)} initialRows={[]} />
-    </div>;
+    return <FormField
+        key={field.fieldId}
+        control={form.control}
+        name={field.fieldId}
+        render={() => (
+            <FormItem>
+                <FormLabel>{field.label} {field.required && <span className="text-destructive"> *</span>}</FormLabel>
+                <FormDescription>{field.description}</FormDescription>
+                <DynamicList fieldName={field.fieldId} key={field.fieldId} control={form.control} columns={generateDataGridSchema(field.dataGrid)} initialRows={[]} />
+                <FormMessage />
+            </FormItem>)}
+    />;
 }
 
 export function FormFileUploadField({ field, form }: FormInputFieldProps) {

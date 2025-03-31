@@ -101,8 +101,13 @@ export const generateFormSchema = (formFields: FormField[]) => {
                     break;
 
                 case "Dynamic List":
-                    schema = z.any() // No validation for dynamic lists, can be customized as needed
-                    // schema = z.array(z.any()).min(2, `${field.label} is required`); // No validation for dynamic lists, can be customized as needed
+                    // schema = z.any() // No validation for dynamic lists, can be customized as needed
+                    schema = z.array(z.any()).min(1, `${field.label} is required.`)
+                        .refine((value) => checkDataGridFieldsEmpty(value), {
+                            message: `Please ensure all columns in each row are filled in, and click the 'Save' button on each row to insert the data into the table.`,
+                        }
+
+                        )
                     break;
 
                 case "Sub Heading":
@@ -119,7 +124,7 @@ export const generateFormSchema = (formFields: FormField[]) => {
         formFields.forEach((field) => {
             if (field.conditionalLogic) {
 
-                if (evaluateCondition(field, data)) {
+                if ((field.fieldType !== "Sub Heading") && evaluateCondition(field, data)) {
                     // If the condition is satisfied, make the field required
                     if (!data[field.fieldId] || data[field.fieldId] === "") {
                         ctx.addIssue({
@@ -169,3 +174,16 @@ const checkMaxWord = (value: string, maxWords: number | undefined) => {
     const wordCount = value.trim().split(/\s+/).length;
     return wordCount <= maxWords; // Ensure word count is below or equal to the maximum
 };
+
+
+// Helper function to check if the value meets the minimum word count requirement
+const checkDataGridFieldsEmpty = (arr: Array<any>) => {
+    for (const obj of arr) {
+        for (const key in obj) {
+            if (obj[key] === "" || obj[key] === null || obj[key] === undefined) {
+                return false;
+            }
+        }
+    }
+    return true;
+}

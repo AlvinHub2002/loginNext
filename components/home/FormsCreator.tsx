@@ -7,13 +7,14 @@ import { useRouter } from 'next/navigation'
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
 import { generateFormSchema } from "@/lib/generate-form-schema";
-import { FormSchema } from "@/types/form-schema";
+import { FormSchema, FormField } from "@/types/form-schema";
 import { useEffect, useState } from "react";
 import Loader from "@/components/ui/loader"
 import toast from "react-hot-toast";
 import axios from "@/lib/axios";
 import FormElementsHandler from "./FormInputField";
 import { usePathname } from 'next/navigation'
+import { fileUpload } from "@/lib/fileUpload";
 // import { zodToJsonSchema } from "zod-to-json-schema";
 // import { DevTool } from "@hookform/devtools";
 interface FormProps {
@@ -59,7 +60,7 @@ export function FormsCreator({ formData }: FormProps) {
             }
         })();
 
-    }, [router,pathname])
+    }, [router, pathname])
 
     // Output the schema description
 
@@ -73,19 +74,32 @@ export function FormsCreator({ formData }: FormProps) {
         if (!loader) {
             const DataToSend: any = [];
             const fileIndexes = Object.keys(data);
-            fileIndexes.forEach((response) => {
-                if (!data[response].name) {
-                    DataToSend.push({ field_id: response, response: data[response] })
-                }
-            })
-            console.log(DataToSend)
+            const fileUploadIndexes = formData.formFields.filter((value: FormField) => value.fieldType === "File upload");
+
+            console.log(fileUploadIndexes)
             try {
+
+
                 setLoader(true);
-                await axios.post("/api/v1/forms/upskill2025/responses", { formId: "upkill2025", responses: DataToSend }, {
+                for (const response of fileIndexes) {
+                    if (fileUploadIndexes.some((field: FormField) => field.fieldId === response)) {
+                        if (data[response] !== "" && data[response] !== null) {
+                            console.log(data[response])
+                            const images = await fileUpload(data[response]); // Await the upload before moving on
+                            DataToSend.push({ field_id: response, response: images.map(file => file.url) });
+                        }
+                    } else {
+                        DataToSend.push({ field_id: response, response: data[response] });
+                    }
+                }
+
+                console.log(DataToSend)
+                await axios.post(`/api/v1/forms/${formData.formId}/responses`, { formId: formData.formId, responses: DataToSend }, {
                     withCredentials: true
                 })
-                router.push("/submitted");
                 toast.success('Respose submitted');
+                router.push("/submitted");
+                setLoader(false);
             } catch (err) {
                 setLoader(false);
                 console.log(err)
@@ -94,7 +108,7 @@ export function FormsCreator({ formData }: FormProps) {
         }
     }
     // console.log(form.formState.defaultValues);
-    console.log(form.formState.errors);
+    // console.log(form.formState.errors);
     return (<>
 
 

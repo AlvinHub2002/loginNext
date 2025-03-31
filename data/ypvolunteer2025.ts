@@ -445,6 +445,7 @@ export const ypVolunteer2025: FormSchema = {
             "fieldType": "File upload",
             "label": "Q8 Attach any supplementary documents (optional).",
             "description": "Allowed file formats: .pdf, .docx",
+            "fileTypes": ["pdf", "docx"],
             "required": false
         },
         {
