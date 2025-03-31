@@ -2,8 +2,14 @@
 // import { SampleForm } from "@/components/home/sample-form";
 import { ypAffinity2025 } from "@/data/ypaffinity2025";
 import { FormsCreator } from "@/components/home/FormsCreator";
-
+import type { Metadata } from "next";
 import Head from 'next/head'
+
+export const metadata: Metadata = {
+  title: "YP Awards 2025",
+  description: "GEMS Form Builder Application",
+};
+
 
 export default function Home() {
 

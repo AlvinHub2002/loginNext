@@ -242,7 +242,7 @@ export const ypAffinity2025: FormSchema = {
         {
             "fieldId": "field_025",
             "fieldType": "File upload",
-            "label": "Formal picture of the nominee",
+            "label": "Upload Formal group picture of the nominated AG",
             "description": "Allowed file formats: .png, .jpg, .jpeg, Max size : 1MB",
             "required": true,
             "fileTypes": ["png", "jpg", "jpeg"],
