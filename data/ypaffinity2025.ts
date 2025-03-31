@@ -2,7 +2,7 @@ import { FormSchema } from "@/types/form-schema";
 
 export const ypAffinity2025: FormSchema = {
     "formId": "ypAffinity2025",
-    "formTitle": "R10 Young Professionals Outstanding Volunteer Award 2025 (Academia & Industry Category) Nomination Form",
+    "formTitle": "R10 Young Professionals Outstanding Section Affinity Group 2025",
     "description": "",
     "formFields":[
         {
