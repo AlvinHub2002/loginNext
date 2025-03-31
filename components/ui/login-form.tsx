@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import axios from "axios";
 import toast from "react-hot-toast";
 export function LoginForm({
@@ -18,6 +18,7 @@ export function LoginForm({
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const router = useRouter();
+  const searchParams = useSearchParams()
   // Handle form submission
   const onSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -38,7 +39,8 @@ export function LoginForm({
 
       // Redirect to the login page after 10 seconds
       setTimeout(() => {
-        router.push("/form/upskill2025");
+        const next  = searchParams.get("next");
+        router.push(next || '/');
       }, 2000); // 10000ms = 10 seconds
       // router.push("/form/upskill2025");
       // Assuming the response contains a token or some other data after successful login

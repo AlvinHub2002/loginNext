@@ -13,6 +13,7 @@ import Loader from "@/components/ui/loader"
 import toast from "react-hot-toast";
 import axios from "@/lib/axios";
 import FormElementsHandler from "./FormInputField";
+import { usePathname } from 'next/navigation'
 // import { zodToJsonSchema } from "zod-to-json-schema";
 // import { DevTool } from "@hookform/devtools";
 interface FormProps {
@@ -21,6 +22,7 @@ interface FormProps {
 
 export function FormsCreator({ formData }: FormProps) {
     const router = useRouter();
+    const pathname = usePathname()
     const [formSchema, setFormSchema] = useState(generateFormSchema(formData.formFields));
     const [loader, setLoader] = useState(false);
 
@@ -53,11 +55,11 @@ export function FormsCreator({ formData }: FormProps) {
                 })
             } catch (e) {
                 console.error(e);
-                router.push("/login")
+                router.push(`/login?next=${pathname}`);
             }
         })();
 
-    }, [router])
+    }, [router,pathname])
 
     // Output the schema description
 
