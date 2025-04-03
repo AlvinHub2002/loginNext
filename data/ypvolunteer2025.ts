@@ -116,6 +116,9 @@ export const ypVolunteer2025: FormSchema = {
                 "Nepal Subsection",
                 "New South Wales Section",
                 "New Zealand Central Section",
+                "Nepal Section",
+                "Bhubaneswar Section",
+                "Maldives Subsection",
                 "New Zealand North Section",
                 "New Zealand South Section",
                 "North Karnataka Subsection",
@@ -173,7 +176,7 @@ export const ypVolunteer2025: FormSchema = {
         {
             "fieldId": "field_009",
             "fieldType": "Text area",
-            "label": "Position(s) In IEEE (If Any)",
+            "label": "Current Position(s) In IEEE (If Any)",
             "description": "",
             "placeholder": "string",
             "required": false
@@ -380,22 +383,23 @@ export const ypVolunteer2025: FormSchema = {
             "fieldId": "field_018",
             "fieldType": "Sub Heading",
             "label": "Contributions to IEEE and Academia",
-            "description": "",
+            "description": "contributions must be from the past year 2024-25 and with a focus on activities implemented in/in collaboration with Region 10",
             "required": false
         },
         {
             "fieldId": "field_019",
             "fieldType": "Text area",
             "label": "Q1 List the IEEE roles/positions held by the nominee. Describe the responsibilities and duration of each role",
-            "description": "",
+            "description": "Maximum 200 words",
             "placeholder": "string",
-            "required": true
+            "required": true,
+            "maxWords": 200
         },
         {
             "fieldId": "field_020",
             "fieldType": "Text area",
             "label": "Q2 Describe the nominee's contributions to IEEE within the academic/Industry community. How have these contributions impacted the community?",
-            "description": "Maximum 1250 characters",
+            "description": "Maximum 200 words",
             "placeholder": "string",
             "required": true,
             "maxWords": 200
@@ -403,7 +407,7 @@ export const ypVolunteer2025: FormSchema = {
         {
             "fieldId": "field_021",
             "fieldType": "Text area",
-            "label": "Q3 Provide examples of the nominee's leadership in organizing IEEE events, seminars, or workshops.",
+            "label": "Q3 Provide 2 examples of the nominee's leadership in organizing IEEE events, seminars, or workshops",
             "description": "Maximum 200 words",
             "required": true,
             "maxWords": 200

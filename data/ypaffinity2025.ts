@@ -120,12 +120,24 @@ export const ypAffinity2025: FormSchema = {
             "required": false
         },
         {
+            "fieldId": "field_0091",
+            "fieldType": "Text area",
+            "label": "Q1. vTools event reporting: Briefly outline the number and diversity of events reported by your AG in vTools",
+            "description": "Maximum 200 words",
+            "maxWords": 200,
+            "placeholder": "string",
+            "required": true,
+            
+        },
+        {
             "fieldId": "field_009",
             "fieldType": "Text area",
-            "label": "Q1. List and describe the key activities organized by your Affinity Group in the past year. How have these activities impacted your members and the community?",
-            "description": "",
+            "label": "Q2. List and describe the key activities organized by your Affinity Group in the past year. How have these activities impacted your members and the community?",
+            "description": "Maximum 200 words",
+            "maxWords": 200,
             "placeholder": "string",
-            "required": true
+            "required": true,
+            
         },
         {
             "fieldId": "field_010",
@@ -137,8 +149,9 @@ export const ypAffinity2025: FormSchema = {
         {
             "fieldId": "field_011",
             "fieldType": "Text area",
-            "label": "Q2. How do your Affinity Group's activities align with IEEE's mission and the objectives of Region 10? Provide examples.",
-            "description": "",
+            "label": "Q3. How do your Affinity Group's activities align with IEEE's mission and the objectives of Region 10 and MGA YP? Provide examples.",
+            "description": "Maximum 200 words",
+            "maxWords": 200,
             "placeholder": "string",
             "required": true
         },
@@ -152,8 +165,9 @@ export const ypAffinity2025: FormSchema = {
         {
             "fieldId": "field_013",
             "fieldType": "Text area",
-            "label": "Q3. Describe any innovative or creative approaches your Affinity Group has employed in engaging members, organizing events, or addressing community needs.",
-            "description": "",
+            "label": "Q4. Describe any innovative or creative approaches your Affinity Group has employed in engaging members, organizing events, or addressing community needs.",
+            "description": "Maximum 200 words",
+            "maxWords": 200,
             "placeholder": "string",
             "required": true
         },
@@ -165,10 +179,21 @@ export const ypAffinity2025: FormSchema = {
             "required": false
         },
         {
+            "fieldId": "field_0092",
+            "fieldType": "Text area",
+            "label": "Q5. Outline efforts towards student to YP transition and retention",
+            "description": "Maximum 200 words",
+            "maxWords": 200,
+            "placeholder": "string",
+            "required": true,
+            
+        },
+        {
             "fieldId": "field_015",
             "fieldType": "Text area",
-            "label": "Q4. Provide details on membership growth. How has your Affinity Group attracted and retained members? Including current and previous year statistics details and also explain any strategies or initiatives that helped.",
-            "description": "",
+            "label": "Q6. Provide details on membership growth. How has your Affinity Group attracted and retained members? Including current and previous year statistics details and also explain any strategies or initiatives that helped.",
+            "description": "Maximum 200 words",
+            "maxWords": 200,
             "placeholder": "string",
             "required": true
         },
@@ -180,10 +205,21 @@ export const ypAffinity2025: FormSchema = {
             "required": false
         },
         {
+            "fieldId": "field_0093",
+            "fieldType": "Text area",
+            "label": "Q7. Outline your AG’s contribution to the vibrancy of the Region. Elaborate on any R10/R10 YP initiative which your AG has applied to/awarded and implemented",
+            "description": "Maximum 200 words",
+            "maxWords": 200,
+            "placeholder": "string",
+            "required": true,
+            
+        },
+        {
             "fieldId": "field_017",
             "fieldType": "Text area",
-            "label": "Q5. List any collaborations or partnerships your Affinity Group has established with other IEEE entities, industry, academia, or community organizations. Describe the nature and outcome of these partnerships.",
-            "description": "",
+            "label": "Q8. List any collaborations or partnerships your Affinity Group has established with other IEEE entities, industry, academia, or community organizations. Describe the nature and outcome of these partnerships.",
+            "description": "Maximum 200 words",
+            "maxWords": 200,
             "placeholder": "string",
             "required": true
         },
@@ -197,8 +233,9 @@ export const ypAffinity2025: FormSchema = {
         {
             "fieldId": "field_019",
             "fieldType": "Text area",
-            "label": "Q6. What measures has your Affinity Group taken to ensure its activities are sustainable and leave a lasting impact? Discuss any succession planning or legacy projects.",
-            "description": "",
+            "label": "Q9. What measures has your Affinity Group taken to ensure its activities are sustainable and leave a lasting impact? Discuss any succession planning or legacy projects.",
+            "description": "Maximum 200 words",
+            "maxWords": 200,
             "placeholder": "string",
             "required": true
         },
@@ -212,8 +249,9 @@ export const ypAffinity2025: FormSchema = {
         {
             "fieldId": "field_021",
             "fieldType": "Text area",
-            "label": "Q7. Provide any additional information that supports your nomination for the R10 Young Professionals Outstanding Section Affinity Group Award.",
-            "description": "",
+            "label": "Q10. Provide any additional information that supports your nomination for the R10 Young Professionals Outstanding Section Affinity Group Award.",
+            "description": "Maximum 200 words",
+            "maxWords": 200,
             "placeholder": "string",
             "required": true
         },
