@@ -80,6 +80,7 @@ export const sampleFormData: FormSchema = {
             "options": [
                 "Beijing", "Delhi", "Hyderabad", "Islamabad", "Kerala", "Madras", "Nanjing",
                 "Seoul", "Sri Lanka", "Uttar Pradesh", "Victorian", "Region 10", "Bangalore",
+                "Bangladesh",
                 "Kolkata", "Lahore", "Bombay", "Malaysia", "Northern Australia", "Karachi", "Kolkata Section"
             ],
             "conditionalLogic": {
