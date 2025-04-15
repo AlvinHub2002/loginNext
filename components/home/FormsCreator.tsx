@@ -56,7 +56,7 @@ export function FormsCreator({ formData }: FormProps) {
                 })
             } catch (e) {
                 console.error(e);
-                router.push(`/login?next=${pathname}`);
+                // router.push(`/login?next=${pathname}`);
             }
         })();
 
